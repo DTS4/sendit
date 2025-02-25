@@ -37,23 +37,7 @@ const Settings = () => {
           </label>
         </div>
 
-        {/* Dark Mode */}
-        <div className="settings-item">
-          <div className="settings-info">
-            <h2 className="settings-subtitle">Dark Mode</h2>
-            <p className="settings-description">
-              Enable dark mode for the dashboard
-            </p>
-          </div>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={settings.darkMode}
-              onChange={() => toggleSetting("darkMode")}
-            />
-            <span className="slider"></span>
-          </label>
-        </div>
+
 
         {/* Two-Factor Authentication */}
         <div className="settings-item">

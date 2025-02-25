@@ -1,7 +1,7 @@
 .sidebar {
-    width: 16rem;
+    width: 13rem;
     height: 100vh;
-    background: #1f2937;
+    background: whitesmoke;
     color: white;
     position: fixed;
     left: 0;
@@ -9,7 +9,6 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    boarder: 100px solid #374151;
   }
   
   .sidebar-header {

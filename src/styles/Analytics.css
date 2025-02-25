@@ -2,6 +2,9 @@
 .analytics-container {
     padding: 24px;
     animation: fadeIn 0.5s ease-out;
+    width: 800px;
+    height: 200px;
+    justify-self: center;
   }
   
   /* Title */

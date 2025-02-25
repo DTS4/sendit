@@ -2,6 +2,8 @@
 .dashboard-container {
     padding: 24px;
     animation: fadeIn 0.5s ease-in-out;
+    width: 79VW;
+    justify-self: right;
   }
   
   .dashboard-title {
