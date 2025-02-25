@@ -1,48 +1,24 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Home, Package, PlusCircle, ShoppingCart } from "lucide-react";
+import "../styles/Sidebar.css"; 
 
-import styles from '../styles/Sidebar.css';
-
-
-const SidebarItem = ({ icon, label, active, onClick }) => (
-  <button onClick={onClick} className={`sidebar-item ${active ? "active" : ""}`}>
+const SidebarItem = ({ to, icon, label }) => (
+  <Link to={to} className="sidebar-item">
     {icon}
     <span className="sidebar-label">{label}</span>
-  </button>
+  </Link>
 );
 
-const Sidebar = ({ activeTab, setActiveTab }) => {
+const Sidebar = () => {
   return (
     <div className="sidebar">
-      {/* Sidebar Logo */}
       <div className="sidebar-logo">Dashboard</div>
-
-      {/* Navigation Items */}
       <nav className="sidebar-nav">
-        <SidebarItem
-          icon={<Home size={20} />}
-          label="Overview"
-          active={activeTab === "overview"}
-          onClick={() => setActiveTab("overview")}
-        />
-        <SidebarItem
-          icon={<ShoppingCart size={20} />}
-          label="My Orders"
-          active={activeTab === "orders"}
-          onClick={() => setActiveTab("orders")}
-        />
-        <SidebarItem
-          icon={<Package size={20} />}
-          label="Items"
-          active={activeTab === "items"}
-          onClick={() => setActiveTab("items")}
-        />
-        <SidebarItem
-          icon={<PlusCircle size={20} />}
-          label="Create Order"
-          active={activeTab === "create"}
-          onClick={() => setActiveTab("create")}
-        />
+        <SidebarItem to="/overview" icon={<Home size={20} />} label="Overview" />
+        <SidebarItem to="/OrderStatus" icon={<ShoppingCart size={20} />} label="My Orders" />
+        <SidebarItem to="/items" icon={<Package size={20} />} label="Items" />
+        <SidebarItem to="/CreateOrder" icon={<PlusCircle size={20} />} label="Create Order" />
       </nav>
     </div>
   );

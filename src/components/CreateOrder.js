@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import styles from '../styles/CreateOrder.css';
-
+import styles from "../styles/CreateOrder.css";
 
 const CreateOrder = () => {
   const [formData, setFormData] = useState({
@@ -22,57 +21,53 @@ const CreateOrder = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>Create New Order</h2>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.formGroup}>
-          <label htmlFor="item" className={styles.label}>Item Name</label>
+    <div className="container">
+      <h2>Create New Order</h2>
+      <form onSubmit={handleSubmit} className="form">
+        <div className="form-group">
+          <label htmlFor="item">Item Name</label>
           <input
             type="text"
             id="item"
             name="item"
             value={formData.item}
             onChange={handleChange}
-            className={styles.input}
             required
           />
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="quantity" className={styles.label}>Quantity</label>
+        <div className="form-group">
+          <label htmlFor="quantity">Quantity</label>
           <input
             type="number"
             id="quantity"
             name="quantity"
             value={formData.quantity}
             onChange={handleChange}
-            className={styles.input}
             required
           />
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="address" className={styles.label}>Delivery Address</label>
+        <div className="form-group">
+          <label htmlFor="address">Delivery Address</label>
           <input
             type="text"
             id="address"
             name="address"
             value={formData.address}
             onChange={handleChange}
-            className={styles.input}
             required
           />
         </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="notes" className={styles.label}>Additional Notes</label>
+        <div className="form-group">
+          <label htmlFor="notes">Additional Notes</label>
           <textarea
             id="notes"
             name="notes"
             value={formData.notes}
             onChange={handleChange}
             rows={4}
-            className={styles.textarea}
           />
         </div>
-        <button type="submit" className={styles.submitButton}>
+        <button type="submit" className="submit-button">
           Create Order
         </button>
       </form>
