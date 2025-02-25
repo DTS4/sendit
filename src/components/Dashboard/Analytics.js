@@ -14,7 +14,7 @@ const data = [
 const Analytics = () => {
   return (
     <div className="analytics-container">
-      <h1 className="analytics-title">Analytics</h1>
+      <h1 className="analytics-title"></h1>
 
       <div className="analytics-grid">
         <div className="analytics-card">

@@ -17,7 +17,7 @@ const Settings = () => {
 
   return (
     <div className="settings-container">
-      <h1 className="settings-title">Settings</h1>
+      <h1 className="settings-title"></h1>
       <div className="settings-card">
         {/* Email Notifications */}
         <div className="settings-item">
@@ -38,24 +38,6 @@ const Settings = () => {
         </div>
 
 
-
-        {/* Two-Factor Authentication */}
-        <div className="settings-item">
-          <div className="settings-info">
-            <h2 className="settings-subtitle">Two-Factor Authentication</h2>
-            <p className="settings-description">
-              Enable two-factor authentication for added security
-            </p>
-          </div>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={settings.twoFactorAuth}
-              onChange={() => toggleSetting("twoFactorAuth")}
-            />
-            <span className="slider"></span>
-          </label>
-        </div>
       </div>
     </div>
   )
