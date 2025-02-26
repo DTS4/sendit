@@ -1,0 +1,114 @@
+.order-container {
+    padding: 20px;
+  }
+  
+  .order-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .steps-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .step {
+    display: flex;
+    align-items: center;
+    color: #999;
+  }
+  
+  .step.active {
+    color: #007bff;
+  }
+  
+  .step-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background-color: #f0f0f0;
+  }
+  
+  .step.active .step-number {
+    border-color: #007bff;
+    background-color: #e6f2ff;
+  }
+  
+  .step-label {
+    margin-left: 8px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .step-line {
+    flex-grow: 1;
+    height: 2px;
+    background-color: #ccc;
+    margin: 0 10px;
+  }
+  
+  .step-line.active-line {
+    background-color: #007bff;
+  }
+  
+  .order-box {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .order-section {
+    margin-bottom: 20px;
+  }
+  
+  .section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .order-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .back-button,
+  .next-button {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .back-button {
+    border: 1px solid #ccc;
+    background-color: white;
+    color: #333;
+  }
+  
+  .back-button:hover {
+    background-color: #f8f8f8;
+  }
+  
+  .next-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+  }
+  
+  .next-button:hover {
+    background-color: #0056b3;
+  }
+  

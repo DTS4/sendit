@@ -1,30 +1,21 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Sidebar from "./components/Sidebar";
-import CreateOrder from "./components/CreateOrder";
-import OrderStatus from "./components/OrderStatus";
-import RecentOrders from "./components/RecentOrders";
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import UserContext from './context/UserContext';
+import UserDashboard from './pages/UserDashboard';
+import { UserProvider } from './context/UserContext';
+import './App.css';
 
-const Overview = () => <h1>Overview Page</h1>;
-const Items = () => <h1>Items Page</h1>;
 
-const App = () => {
+
+function App() {
   return (
     <Router>
-      <div className="app-container">
-        <Sidebar />
-        <div className="content">
-          <Routes>
-            <Route path="/overview" element={<Overview />} />
-            <Route path="/orders" element={<OrderStatus />} />
-            <Route path="/items" element={<Items />} />
-            <Route path="/create-order" element={<CreateOrder />} />
-            <Route path="/recent-orders" element={<RecentOrders />} />
-          </Routes>
-        </div>
-      </div>
+      <UserProvider>
+        <UserDashboard />
+      </UserProvider>
     </Router>
   );
-};
+}
+
 
 export default App;
