@@ -1,95 +1,94 @@
 /* Container */
 .container {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 24px;
-    border: 1px solid #ddd;
-  }
-  
-  /* Header */
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-  }
-  
-  .title {
-    font-size: 1.25rem;
-    font-weight: 600;
-  }
-  
-  .icon {
-    color: #888;
-  }
-  
-  /* Table Wrapper */
-  .tableWrapper {
-    overflow-x: auto;
-  }
-  
-  /* Table */
-  .table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .tableHeader {
-    text-align: left;
-    border-bottom: 2px solid #ddd;
-    background: white;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-  
-  .table th,
-  .table td {
-    padding: 12px;
-  }
-  
-  .tableRow {
-    border-bottom: 1px solid #ddd;
-    transition: background-color 0.2s ease;
-  }
-  
-  .tableRow:last-child {
-    border-bottom: none;
-  }
-  
-  .tableRow:hover {
-    background-color: #f8fafc;
-  }
-  
-  /* Status Badges */
-  .statusBadge {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 16px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: transform 0.2s ease;
-  }
-  
-  .tableRow:hover .statusBadge {
-    transform: scale(1.05);
-  }
-  
-  /* Status Colors */
-  .green {
-    background-color: #d1fae5;
-    color: #065f46;
-  }
-  
-  .blue {
-    background-color: #dbeafe;
-    color: #1e40af;
-  }
-  
-  .yellow {
-    background-color: #fef3c7;
-    color: #92400e;
-  }
-  
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  border: 1px solid #ddd;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.icon {
+  color: #888;
+}
+
+/* Table Wrapper */
+.tableWrapper {
+  overflow-x: auto;
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableHeader {
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.table th,
+.table td {
+  padding: 12px;
+}
+
+.tableRow {
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.2s ease;
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.tableRow:hover {
+  background-color: #f8fafc;
+}
+
+/* Status Badges */
+.statusBadge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: transform 0.2s ease;
+}
+
+.tableRow:hover .statusBadge {
+  transform: scale(1.05);
+}
+
+/* Status Colors */
+.green {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.blue {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.yellow {
+  background-color: #fef3c7;
+  color: #92400e;
+}
