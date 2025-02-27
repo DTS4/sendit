@@ -98,7 +98,56 @@ function SignUp() {
                required
                disabled={loading}
              />
-          
+           </div>
+           <div className="form-group">
+             <label>Email</label>
+             <input
+               type="email"
+               placeholder="Email address"
+               value={formData.email}
+               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+               required
+               disabled={loading}
+             />
+           </div>
+           <div className="form-group">
+             <label>Password</label>
+             <input
+               type="password"
+               placeholder="Password"
+               value={formData.password}
+               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+               required
+               autoComplete="new-password"
+               disabled={loading}
+             />
+           </div>
+           <div className="form-group">
+             <label>Confirm Password</label>
+             <input
+               type="password"
+               placeholder="Confirm password"
+               value={formData.confirmPassword}
+               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+               required
+               autoComplete="new-password"
+               disabled={loading}
+             />
+           </div>
+
+
+           {error && <p className="error-message">{error}</p>}
+
+
+           <button type="submit" className="auth-button" disabled={loading}>
+             {loading ? 'Registering...' : 'Register'}
+           </button>
+         </form>
+         <p className="auth-link">
+           Already have an account? <Link to="/login">Login</Link>
+         </p>
+       </div>
+     </div>
    </div>
  );
 }
