@@ -34,5 +34,44 @@ function SignUp() {
    setError('');
 
 
+   try {
+     const response = await fetch('https://sendit-backend-j83j.onrender.com/signup', {
+       method: 'POST',
+       headers: {
+         'Content-Type': 'application/json',
+       },
+       body: JSON.stringify(formData),
+     });
+
+
+     if (!response.ok) {
+       const errorData = await response.json();
+       throw new Error(errorData.message || 'Failed to create account');
+     }
+
+
+     const data = await response.json();
+     const { user } = data;
+     login(user);
+
+
+     
+
+           {error && <p className="error-message">{error}</p>}
+
+
+           <button type="submit" className="auth-button" disabled={loading}>
+             {loading ? 'Registering...' : 'Register'}
+           </button>
+         </form>
+         <p className="auth-link">
+           Already have an account? <Link to="/login">Login</Link>
+         </p>
+       </div>
+     </div>
+   </div>
+ );
+}
+
 
 export default SignUp;
