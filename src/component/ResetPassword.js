@@ -12,4 +12,46 @@ function ResetPassword() {
  const navigate = useNavigate();
 
 
- 
+ const handleSubmit = async (e) => {
+   e.preventDefault();
+   setLoading(true);
+   setError('');
+   setMessage('');
+
+
+   // Validate passwords match
+   if (password !== confirmPassword) {
+     setError('Passwords do not match');
+     setLoading(false);
+     return;
+   }
+
+
+   t
+           </div>
+           <div className="form-group">
+             <label>Confirm Password</label>
+             <input
+               type="password"
+               placeholder="Confirm password"
+               value={confirmPassword}
+               onChange={(e) => setConfirmPassword(e.target.value)}
+               required
+               autoComplete="new-password"
+               disabled={loading}
+             />
+           </div>
+           {message && <p className="success-message">{message}</p>}
+           {error && <p className="error-message">{error}</p>}
+           <button type="submit" className="auth-button" disabled={loading}>
+             {loading ? 'Resetting...' : 'Reset Password'}
+           </button>
+         </form>
+       </div>
+     </div>
+   </div>
+ );
+}
+
+
+export default ResetPassword;
