@@ -29,7 +29,7 @@ const UserHeader = () => {
               alt="User avatar"
               className="user-avatar"
             />
-            <span className="user-name">John Doe</span>
+            <span className="user-name">Bobb</span>
           </div>
         </div>
       </div>
