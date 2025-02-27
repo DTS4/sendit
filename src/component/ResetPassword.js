@@ -27,31 +27,39 @@ function ResetPassword() {
    }
 
 
-   t
-           </div>
-           <div className="form-group">
-             <label>Confirm Password</label>
-             <input
-               type="password"
-               placeholder="Confirm password"
-               value={confirmPassword}
-               onChange={(e) => setConfirmPassword(e.target.value)}
-               required
-               autoComplete="new-password"
-               disabled={loading}
-             />
-           </div>
-           {message && <p className="success-message">{message}</p>}
-           {error && <p className="error-message">{error}</p>}
-           <button type="submit" className="auth-button" disabled={loading}>
-             {loading ? 'Resetting...' : 'Reset Password'}
-           </button>
-         </form>
-       </div>
-     </div>
-   </div>
- );
-}
+   try {
+     const response = await fetch('https://sendit-backend-j83j.onrender.com/reset-password', {
+       method: 'POST',
+       headers: {
+         'Content-Type': 'application/json',
+       },
+       body: JSON.stringify({ token, password }),
+     });
 
 
-export default ResetPassword;
+     if (!response.ok) {
+       const errorData = await response.json();
+       throw new Error(errorData.message || 'Failed to reset password');
+     }
+
+
+     const data = await response.json();
+     setMessage(data.message || 'Password reset successfully!');
+     setTimeout(() => navigate('/login'), 3000); // Redirect to login after 3 seconds
+   } catch (error) {
+     setError(error.message || 'Something went wrong. Please try again.');
+   } finally {
+     setLoading(false);
+   }
+ };
+
+
+ return (
+   <div className="auth-page">
+     <div className="right-side">
+       <button
+         className="back-button"
+         onClick={() => navigate('/login')}
+         aria-label="Go back"
+       >
+       
