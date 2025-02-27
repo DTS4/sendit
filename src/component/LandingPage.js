@@ -52,7 +52,43 @@ function LandingPage() {
 
  return (
    <>
-     
+     <header className="header">
+       <nav className="nav container">
+         <div className="nav-content">
+           <div className="logo">
+             <a href="#home">
+               <img src="/logo1.png" alt="SendIT Logo" className="logo-img" />
+             </a>
+           </div>
+           <div className="nav-links">
+             <a href="#home" className="nav-link">Home</a>
+             <a href="#about" className="nav-link">About</a>
+             <a href="#services" className="nav-link">Services</a>
+             <a href="#contact" className="nav-link">Contact</a>
+           </div>
+           <div className="auth-buttons">
+             <button className="login-button" onClick={handleLoginClick}>Login</button>
+             <button className="signup-button" onClick={handleSignUpClick}>Sign Up</button>
+           </div>
+         </div>
+       </nav>
+     </header>
+
+
+     {showRoleModal && (
+       <div className="role-modal">
+         <div className="modal-content">
+           <p>Choose your role:</p>
+           <button className="button" onClick={() => handleRoleSelection("user")}>User</button>
+           <button className="button-outline" onClick={() => handleRoleSelection("admin")}>Admin</button>
+           <button className="back-button" onClick={handleBackToLanding}>
+             <FaArrowLeft />
+           </button>
+         </div>
+       </div>
+     )}
+
+
    </>
  );
 }
