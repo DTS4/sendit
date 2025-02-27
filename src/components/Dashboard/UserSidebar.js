@@ -7,7 +7,8 @@ import {
   CheckCircle, 
   XCircle, 
   Truck, 
-  Home 
+  Home, 
+  LogOut 
 } from 'lucide-react';
 
 const UserSidebar = ({ activeSection, setActiveSection }) => {
@@ -38,6 +39,10 @@ const UserSidebar = ({ activeSection, setActiveSection }) => {
           </button>
         ))}
       </nav>
+      <button className="logout-button">
+        <LogOut className="menu-icon" />
+        <span className="menu-label">Logout</span>
+      </button>
     </div>
   );
 };

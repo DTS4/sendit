@@ -5,6 +5,7 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
   }
   
   .sidebar-header {
@@ -62,5 +63,25 @@
   
   .menu-label {
     font-size: 15px;
+  }
+  
+  .logout-button {
+    width: 60%;
+    right: 10px;
+    padding: 12px;
+    margin-top: auto;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .logout-button:hover {
+    background: #cc0000;
   }
   
