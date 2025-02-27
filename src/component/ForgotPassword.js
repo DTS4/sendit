@@ -108,4 +108,14 @@ function ForgotPassword() {
              {loading ? 'Sending...' : 'Send Reset Link'}
            </button>
          </form>
-         <
+         <p className="auth-link">
+           Remember your password? <Link to="/login">Login</Link>
+         </p>
+       </div>
+     </div>
+   </div>
+ );
+}
+
+
+export default ForgotPassword;
