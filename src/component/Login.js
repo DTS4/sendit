@@ -111,7 +111,21 @@ function Login() {
            </p>
 
 
-          
+           <button type="submit" className="auth-button" disabled={loading}>
+             {loading ? 'Signing in...' : 'Sign in'}
+           </button>
+         </form>
+         <p className="auth-link">
+           Don't have an account?{' '}
+           <span
+             className="signup-link"
+             onClick={() => setShowRoleModal(true)}
+           >
+             Sign Up
+           </span>
+         </p>
+       </div>
+     </div>
 
 
      {showRoleModal && (
