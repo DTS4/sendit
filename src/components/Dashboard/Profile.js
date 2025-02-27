@@ -1,53 +1,76 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import "../../styles/Profile.css"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Camera, Mail, User } from "lucide-react";
+import "../../styles/Profile.css";
 
 const Profile = () => {
   const [user, setUser] = useState({
     name: "John Doe",
     email: "john.doe@example.com",
     bio: "Frontend Developer | React Enthusiast",
-    avatar: "/default-avatar.png", // Placeholder avatar
-  })
+    avatar: "/default-avatar.png",
+  });
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setUser((prevUser) => ({ ...prevUser, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setUser((prevUser) => ({ ...prevUser, [name]: value }));
+  };
 
   const handleAvatarChange = (e) => {
-    const file = e.target.files[0]
+    const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file) // Temporary URL for preview
-      setUser((prevUser) => ({ ...prevUser, avatar: imageUrl }))
+      const imageUrl = URL.createObjectURL(file);
+      setUser((prevUser) => ({ ...prevUser, avatar: imageUrl }));
     }
-  }
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log("Updated user:", user)
-    alert("Profile updated successfully!")
-  }
+    e.preventDefault();
+    console.log("Updated user:", user);
+    alert("Profile updated successfully!");
+  };
 
   return (
-    <div className="profile-container">
+    <motion.div 
+      className="profile-container"
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       {/* Profile Header */}
-      <div className="profile-header"></div>
+      <motion.div 
+        className="profile-header"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.5 }}
+      ></motion.div>
 
       {/* Avatar Section */}
       <div className="profile-avatar-container">
-        <img src={user.avatar} alt="Profile" className="profile-avatar" />
+        <motion.img 
+          src={user.avatar} 
+          alt="Profile" 
+          className="profile-avatar"
+          whileHover={{ scale: 1.1 }}
+        />
         <label className="avatar-upload-button">
-          📷
+          <Camera className="icon" />
           <input type="file" accept="image/*" className="hidden-input" onChange={handleAvatarChange} />
         </label>
       </div>
 
       {/* Profile Form */}
-      <form onSubmit={handleSubmit} className="profile-form">
+      <motion.form 
+        onSubmit={handleSubmit} 
+        className="profile-form"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+      >
         <div className="form-group">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name"><User className="form-icon" /> Name</label>
           <input
             type="text"
             id="name"
@@ -58,7 +81,7 @@ const Profile = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email"><Mail className="form-icon" /> Email</label>
           <input
             type="email"
             id="email"
@@ -79,10 +102,17 @@ const Profile = () => {
             className="input-field"
           ></textarea>
         </div>
-        <button type="submit" className="submit-button">Update Profile</button>
-      </form>
-    </div>
-  )
-}
+        <motion.button 
+          type="submit" 
+          className="submit-button"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          Update Profile
+        </motion.button>
+      </motion.form>
+    </motion.div>
+  );
+};
 
-export default Profile
+export default Profile;

@@ -1,5 +1,7 @@
 import React from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { 
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
+} from "recharts";
 import "../../styles/Analytics.css";
 
 const data = [
@@ -14,19 +16,15 @@ const data = [
 const Analytics = () => {
   return (
     <div className="analytics-container">
-      <h1 className="analytics-title"></h1>
+      <h1 className="analytics-title">Analytics Dashboard</h1>
 
+      {/* Stats Grid */}
       <div className="analytics-grid">
-        <div className="analytics-card">
-          <h2 className="analytics-card-title">Total Visitors</h2>
-          <p className="analytics-stat text-blue">15,060</p>
-        </div>
-        <div className="analytics-card">
-          <h2 className="analytics-card-title">Page Views</h2>
-          <p className="analytics-stat text-green">45,320</p>
-        </div>
+        <AnalyticsCard title="Total Visitors" value="15,060" color="text-blue" />
+        <AnalyticsCard title="Page Views" value="45,320" color="text-green" />
       </div>
 
+      {/* Chart Section */}
       <div className="analytics-card chart-container">
         <h2 className="chart-title">Visitor Analytics</h2>
         <ResponsiveContainer width="100%" height={300}>
@@ -44,5 +42,13 @@ const Analytics = () => {
     </div>
   );
 };
+
+// Reusable Analytics Card Component
+const AnalyticsCard = ({ title, value, color }) => (
+  <div className="analytics-card">
+    <h2 className="analytics-card-title">{title}</h2>
+    <p className={`analytics-stat ${color}`}>{value}</p>
+  </div>
+);
 
 export default Analytics;
