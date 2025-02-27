@@ -112,6 +112,25 @@ function Login() {
 
 
           
+
+
+     {showRoleModal && (
+       <div className="role-modal">
+         <div className="modal-content">
+           <p>Choose your role:</p>
+           <button className="button" onClick={() => handleRoleSelection('user')}>
+             User
+           </button>
+           <button className="button-outline" onClick={() => handleRoleSelection('admin')}>
+             Admin
+           </button>
+           <button className="back-button" onClick={() => setShowRoleModal(false)}>
+             <FaArrowLeft />
+           </button>
+         </div>
+       </div>
+     )}
+   </div>
  );
 }
 
