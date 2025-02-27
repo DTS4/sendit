@@ -36,4 +36,38 @@ function ForgotPassword() {
    }
 
 
-   
+   try {
+     const response = await fetch('https://sendit-backend-j83j.onrender.com/forgot-password', {
+       method: 'POST',
+       headers: {
+         'Content-Type': 'application/json',
+       },
+       body: JSON.stringify({ fullName, email }),
+     });
+
+
+     if (!response.ok) {
+       const errorData = await response.json();
+       throw new Error(errorData.message || 'Failed to send reset link');
+     }
+
+
+     const data = await response.json();
+     setMessage(data.message || 'Password reset link sent to your email.');
+   } catch (error) {
+     setError(error.message || 'Something went wrong. Please try again.');
+   } finally {
+     setLoading(false);
+   }
+ };
+
+
+ return (
+   <div className="auth-page">
+     <div className="right-side">
+       <button
+         className="back-button"
+         onClick={() => navigate('/login')}
+         aria-label="Go back"
+       >
+         
