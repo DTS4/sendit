@@ -29,4 +29,45 @@ export function AuthProvider({ children }) {
  }, []);
 
 
- 
+ // Login function
+ const login = (userData) => {
+   try {
+     console.log('Logging in user:', userData); // Debugging (remove in production)
+     setUser(userData);
+     localStorage.setItem('user', JSON.stringify(userData)); // Persist user data
+   } catch (error) {
+     console.error('Login error:', error);
+     throw new Error('Failed to log in. Please try again.');
+   }
+ };
+
+
+ // Logout function
+ const logout = () => {
+   try {
+     console.log('Logging out user'); // Debugging (remove in production)
+     setUser(null);
+     localStorage.removeItem('user'); // Clear user data
+   } catch (error) {
+     console.error('Logout error:', error);
+     throw new Error('Failed to log out. Please try again.');
+   }
+ };
+
+
+ return (
+   <AuthContext.Provider value={{ user, login, logout }}>
+     {children}
+   </AuthContext.Provider>
+ );
+}
+
+
+// useAuth hook
+export function useAuth() {
+ const context = useContext(AuthContext);
+ if (!context) {
+   throw new Error('useAuth must be used within an AuthProvider');
+ }
+ return context;
+}
