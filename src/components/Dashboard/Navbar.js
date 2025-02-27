@@ -10,6 +10,7 @@ const Navbar = () => {
           <Search className="search-icon" />
         </button>
       </div>
+      
       <div className="user-actions">
         <button className="notifications-button">
           <Bell className="icon" />
