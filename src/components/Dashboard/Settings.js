@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "../../styles/Settings.css";
 
 const Settings = () => {
@@ -16,11 +16,24 @@ const Settings = () => {
     }
   }, [settings.darkMode]);
 
-  const toggleSetting = (setting) => {
-    setSettings((prevSettings) => ({
-      ...prevSettings,
-      [setting]: !prevSettings[setting],
-    }));
+  const toggleSetting = async (setting) => {
+    const updatedSettings = { ...settings, [setting]: !settings[setting] };
+    setSettings(updatedSettings);
+
+    try {
+      const response = await fetch("https://sendit-backend-j83j.onrender.com/settings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedSettings),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to update settings");
+      }
+    } catch (error) {
+      console.error("Error updating settings:", error);
+    }
   };
 
   return (

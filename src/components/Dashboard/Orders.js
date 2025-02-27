@@ -1,15 +1,27 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/Orders.css";
 
-const orders = [
-  { id: 1, customer: "John Doe", product: "Widget A", amount: 50.0, status: "Shipped" },
-  { id: 2, customer: "Jane Smith", product: "Gadget B", amount: 75.5, status: "Processing" },
-  { id: 3, customer: "Bob Johnson", product: "Tool C", amount: 120.0, status: "Delivered" },
-  { id: 4, customer: "Alice Brown", product: "Device D", amount: 200.0, status: "Pending" },
-  { id: 5, customer: "Charlie Wilson", product: "Accessory E", amount: 30.0, status: "Shipped" },
-];
-
 const Orders = () => {
+  const [orders, setOrders] = useState([]);
+
+  // Fetch orders from the backend
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch("https://sendit-backend-j83j.onrender.com/parcels");
+        if (!response.ok) {
+          throw new Error("Failed to fetch orders");
+        }
+        const data = await response.json();
+        setOrders(data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
   return (
     <div className="orders-container">
       <h1 className="orders-title">Orders</h1>
@@ -28,9 +40,9 @@ const Orders = () => {
             {orders.map((order) => (
               <tr key={order.id} className="order-row">
                 <td>{order.id}</td>
-                <td>{order.customer}</td>
-                <td>{order.product}</td>
-                <td>${order.amount.toFixed(2)}</td>
+                <td>{order.user_id}</td>
+                <td>{order.description}</td>
+                <td>${order.cost ? Number(order.cost).toFixed(2) : "N/A"}</td>
                 <td>
                   <span className={`status-badge ${getStatusClass(order.status)}`}>
                     {order.status}

@@ -1,19 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Users, DollarSign, ShoppingBag, TrendingUp } from 'lucide-react';
 import "../../styles/DashboardHome.css";
 
-const stats = [
-  { label: 'Total Customers', value: '2,543', icon: Users, trend: '+12.5%', color: 'blue' },
-  { label: 'Total Revenue', value: '$45,234', icon: DollarSign, trend: '+8.2%', color: 'green' },
-  { label: 'Total Orders', value: '1,345', icon: ShoppingBag, trend: '+3.8%', color: 'purple' },
-  { label: 'Growth Rate', value: '24.5%', icon: TrendingUp, trend: '+2.4%', color: 'yellow' },
-];
 
-export default function DashboardHome() {
+
+const DashboardHome = () => {
+  const [stats, setStats] = useState([]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch("https://sendit-backend-j83j.onrender.com/stats");
+        if (!response.ok) {
+          throw new Error("Failed to fetch stats");
+        }
+        const data = await response.json();
+        setStats([
+          { label: 'Total Customers', value: data.total_deliveries || "Loading...", icon: Users, trend: '+12.5%', color: 'blue' },
+          { label: 'Total Revenue', value: `$${data.delivered_orders || "Loading..."}`, icon: DollarSign, trend: '+8.2%', color: 'green' },
+          { label: 'Total Orders', value: data.pending_orders || "Loading...", icon: ShoppingBag, trend: '+3.8%', color: 'purple' },
+          { label: 'Growth Rate', value: `${data.in_transit_orders || "Loading..."}%`, icon: TrendingUp, trend: '+2.4%', color: 'yellow' },
+        ]);
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">Dashboard Overview</h1>
-      
+
       <div className="stats-grid">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
@@ -50,4 +69,6 @@ export default function DashboardHome() {
       </div>
     </div>
   );
-}
+};
+
+export default DashboardHome;

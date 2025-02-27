@@ -1,25 +1,37 @@
-import { createContext, useState, useContext } from "react"
+import { createContext, useState, useContext, useEffect } from "react";
 
-const UserContext = createContext()
+const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    role: "Admin",
-  })
+  const [user, setUser] = useState(null);
 
-  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>
-}
+  // Fetch user data from the backend
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch("https://sendit-backend-j83j.onrender.com/user");
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const data = await response.json();
+        setUser(data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
 
+    fetchUser();
+  }, []);
+
+  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
+};
 
 export const useUser = () => {
-  const context = useContext(UserContext)
+  const context = useContext(UserContext);
   if (context === undefined) {
-    throw new Error("useUser must be used within a UserProvider")
+    throw new Error("useUser must be used within a UserProvider");
   }
-  return context
-}
+  return context;
+};
 
 export default UserContext;
-
