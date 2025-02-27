@@ -70,4 +70,12 @@ function ForgotPassword() {
          onClick={() => navigate('/login')}
          aria-label="Go back"
        >
+         <FaArrowLeft />
+       </button>
+       <div className="auth-form">
+         <div className="user-icon-container">
+           <div className="user-icon-circle">
+             <span className="user-icon">🔒</span>
+           </div>
+         </div>
          
