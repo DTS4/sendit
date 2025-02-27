@@ -55,20 +55,50 @@ function SignUp() {
      login(user);
 
 
-     
+     // Redirect based on role
+     if (user.role === 'admin') {
+       navigate('/dashboard/admin');
+     } else {
+       navigate('/dashboard/user');
+     }
+   } catch (error) {
+     console.error('Signup error:', error);
+     setError(error.message || 'An error occurred. Please try again.');
+   } finally {
+     setLoading(false);
+   }
+ };
 
-           {error && <p className="error-message">{error}</p>}
 
-
-           <button type="submit" className="auth-button" disabled={loading}>
-             {loading ? 'Registering...' : 'Register'}
-           </button>
-         </form>
-         <p className="auth-link">
-           Already have an account? <Link to="/login">Login</Link>
-         </p>
-       </div>
-     </div>
+ return (
+   <div className="auth-page">
+     <div className="right-side">
+       <button
+         className="back-button"
+         onClick={() => navigate('/')}
+         aria-label="Go back"
+       >
+         <FaArrowLeft />
+       </button>
+       <div className="auth-form">
+         <div className="user-icon-container">
+           <div className="user-icon-circle">
+             <span className="user-icon">👤</span>
+           </div>
+         </div>
+         <h1>Create Account</h1>
+         <form onSubmit={handleSubmit}>
+           <div className="form-group">
+             <label>Full Name</label>
+             <input
+               type="text"
+               placeholder="Your full name"
+               value={formData.name}
+               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+               required
+               disabled={loading}
+             />
+          
    </div>
  );
 }
