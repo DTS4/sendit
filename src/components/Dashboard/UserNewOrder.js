@@ -46,9 +46,9 @@ const UserNewOrder = () => {
 
         <div className="order-buttons">
           {step > 1 && (
-            <button className="back-button" onClick={() => setStep(step - 1)}>
-              Back
-            </button>
+             <button className="back-button" onClick={() => setStep(step - 1)}>
+               Back
+             </button>
           )}
           <button className="next-button" onClick={() => step < 3 ? setStep(step + 1) : null}>
             {step === 3 ? 'Create Order' : 'Continue'}
