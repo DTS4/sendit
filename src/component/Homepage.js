@@ -12,7 +12,7 @@ import {
 } from "react-icons/fa";
 
 
-function LandingPage() {
+function HomePage() {
  const [showRoleModal, setShowRoleModal] = useState(false);
  const [formData, setFormData] = useState({
    name: "",
@@ -235,4 +235,4 @@ function LandingPage() {
 }
 
 
-export default LandingPage;
+export default HomePage;
