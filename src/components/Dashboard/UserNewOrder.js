@@ -14,7 +14,7 @@ const UserNewOrder = () => {
             <div className={`step ${step >= number ? 'active' : ''}`}>
               <div className="step-number">{number}</div>
               <span className="step-label">
-                {number === 1 ? 'Select Items' : number === 2 ? 'Shipping' : 'Payment'}
+                {/* {number === 1 ? 'Select Items' : number === 2 ? 'Shipping' : 'Payment'} */}
               </span>
             </div>
             {number < 3 && <div className={`step-line ${step > number ? 'active-line' : ''}`}></div>}
@@ -25,21 +25,21 @@ const UserNewOrder = () => {
       <div className="order-box">
         {step === 1 && (
           <div className="order-section">
-            <h3 className="section-title">Select Items</h3>
+            {/* <h3 className="section-title">Select Items</h3> */}
             {/* Add item selection form */}
           </div>
         )}
 
         {step === 2 && (
           <div className="order-section">
-            <h3 className="section-title">Shipping Information</h3>
+            {/* <h3 className="section-title">Shipping Information</h3> */}
             {/* Add shipping form */}
           </div>
         )}
 
         {step === 3 && (
           <div className="order-section">
-            <h3 className="section-title">Payment Details</h3>
+            <h3 className="section-title">CreateNewOrder</h3>
             {/* Add payment form */}
           </div>
         )}
@@ -51,7 +51,7 @@ const UserNewOrder = () => {
             </button>
           )}
           <button className="next-button" onClick={() => step < 3 ? setStep(step + 1) : null}>
-            {step === 3 ? 'Place Order' : 'Continue'}
+            {step === 3 ? 'Create Order' : 'Continue'}
           </button>
         </div>
       </div>
