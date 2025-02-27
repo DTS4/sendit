@@ -78,4 +78,34 @@ function ForgotPassword() {
              <span className="user-icon">🔒</span>
            </div>
          </div>
-         
+         <h1>Forgot Password</h1>
+         <form onSubmit={handleSubmit}>
+           <div className="form-group">
+             <label>Full Name</label>
+             <input
+               type="text"
+               placeholder="Enter your full name"
+               value={fullName}
+               onChange={(e) => setFullName(e.target.value)}
+               required
+               disabled={loading}
+             />
+           </div>
+           <div className="form-group">
+             <label>Email</label>
+             <input
+               type="email"
+               placeholder="Enter your email address"
+               value={email}
+               onChange={(e) => setEmail(e.target.value)}
+               required
+               disabled={loading}
+             />
+           </div>
+           {message && <p className="success-message">{message}</p>}
+           {error && <p className="error-message">{error}</p>}
+           <button type="submit" className="auth-button" disabled={loading}>
+             {loading ? 'Sending...' : 'Send Reset Link'}
+           </button>
+         </form>
+         <
