@@ -62,4 +62,51 @@ function ResetPassword() {
          onClick={() => navigate('/login')}
          aria-label="Go back"
        >
-       
+         <FaArrowLeft />
+       </button>
+       <div className="auth-form">
+         <div className="user-icon-container">
+           <div className="user-icon-circle">
+             <span className="user-icon">🔑</span>
+           </div>
+         </div>
+         <h1>Reset Password</h1>
+         <form onSubmit={handleSubmit}>
+           <div className="form-group">
+             <label>New Password</label>
+             <input
+               type="password"
+               placeholder="New password"
+               value={password}
+               onChange={(e) => setPassword(e.target.value)}
+               required
+               autoComplete="new-password"
+               disabled={loading}
+             />
+           </div>
+           <div className="form-group">
+             <label>Confirm Password</label>
+             <input
+               type="password"
+               placeholder="Confirm password"
+               value={confirmPassword}
+               onChange={(e) => setConfirmPassword(e.target.value)}
+               required
+               autoComplete="new-password"
+               disabled={loading}
+             />
+           </div>
+           {message && <p className="success-message">{message}</p>}
+           {error && <p className="error-message">{error}</p>}
+           <button type="submit" className="auth-button" disabled={loading}>
+             {loading ? 'Resetting...' : 'Reset Password'}
+           </button>
+         </form>
+       </div>
+     </div>
+   </div>
+ );
+}
+
+
+export default ResetPassword;
