@@ -37,15 +37,16 @@ export default function DashboardHome() {
         })}
       </div>
 
-      <div className="dashboard-widgets">
-        <div className="widget-card">
-          <h2 className="widget-title">Recent Activity</h2>
-          {/* Add activity content here */}
-        </div>
-        <div className="widget-card">
-          <h2 className="widget-title">Performance</h2>
-          {/* Add performance chart here */}
-        </div>
+      {/* Map Section */}
+      <div className="map-container">
+        <h2 className="widget-title">Map Overview</h2>
+        <iframe
+          className="map-frame"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434508616!2d144.9537363156839!3d-37.81720997975165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d5df1f2ffb1%3A0x5045675218cce7f0!2sMelbourne%2C%20Australia!5e0!3m2!1sen!2s!4v1640999000000!5m2!1sen!2s"
+          allowFullScreen=""
+          loading="lazy"
+          title="Location Map"
+        ></iframe>
       </div>
     </div>
   );
