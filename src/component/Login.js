@@ -22,8 +22,49 @@ function Login() {
    setError('');
 
 
-   
-   </div>
+   try {
+     const response = await fetch('https://sendit-backend-j83j.onrender.com/login', {
+       method: 'POST',
+       headers: {
+         'Content-Type': 'application/json',
+       },
+       body: JSON.stringify(formData),
+     });
+
+
+     if (!response.ok) {
+       const errorData = await response.json();
+       throw new Error(errorData.message || 'Invalid credentials');
+     }
+
+
+     const data = await response.json();
+     const { user } = data;
+     login(user);
+
+
+     // Redirect based on role
+     if (user.role === 'admin') {
+       navigate('/dashboard/admin');
+     } else {
+       navigate('/dashboard/user');
+     }
+   } catch (error) {
+     console.error('Login error:', error);
+     setError(error.message || 'Wrong credentials. Please try again.');
+   } finally {
+     setLoading(false);
+   }
+ };
+
+
+ const handleRoleSelection = (role) => {
+   setShowRoleModal(false);
+   navigate(`/signup/${role}`);
+ };
+
+
+ 
  );
 }
 
