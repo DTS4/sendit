@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/Orders.css";
+import { useAuth } from "../../context/AuthContext"; // Ensure correct path
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
+  const { token } = useAuth(); // Get the token from AuthContext
 
   // Fetch orders from the backend
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("https://sendit-backend-j83j.onrender.com/parcels");
+        const response = await fetch("https://sendit-backend-j83j.onrender.com/parcels", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Corrected syntax
+          },
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
         }
@@ -20,7 +26,7 @@ const Orders = () => {
     };
 
     fetchOrders();
-  }, []);
+  }, [token]);
 
   return (
     <div className="orders-container">
@@ -42,7 +48,7 @@ const Orders = () => {
                 <td>{order.id}</td>
                 <td>{order.user_id}</td>
                 <td>{order.description}</td>
-                <td>${order.cost ? Number(order.cost).toFixed(2) : "N/A"}</td>
+                <td>${order.cost?.toFixed(2) || "N/A"}</td>
                 <td>
                   <span className={`status-badge ${getStatusClass(order.status)}`}>
                     {order.status}
@@ -57,7 +63,6 @@ const Orders = () => {
   );
 };
 
-// Function to determine the status class for styling
 const getStatusClass = (status) => {
   switch (status) {
     case "Shipped":

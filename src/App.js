@@ -1,19 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import UserContext from './context/UserContext';
+import { AuthProvider } from './context/AuthContext'; // ✅ Use AuthProvider instead
 import DashboardPage from './pages/DashboardPage';
-import { UserProvider } from './context/UserContext';
 import './App.css';
-
-
 
 function App() {
   return (
     <Router>
-      <UserProvider>
-        <UserContext />
+      <AuthProvider> {/* ✅ Wrap with AuthProvider instead of UserProvider */}
         <DashboardPage />
-      </UserProvider>
+      </AuthProvider>
     </Router>
   );
 }

@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Users, DollarSign, ShoppingBag, TrendingUp } from 'lucide-react';
 import "../../styles/DashboardHome.css";
-
-
+import { useAuth } from "../../context/AuthContext"; // Check the correct path
 
 const DashboardHome = () => {
   const [stats, setStats] = useState([]);
+  const { token } = useAuth(); // Get the token from AuthContext
 
+  // Fetch stats from the backend
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await fetch("https://sendit-backend-j83j.onrender.com/stats");
+        const response = await fetch("https://sendit-backend-j83j.onrender.com/stats", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Fixed syntax
+          },
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch stats");
         }
@@ -27,12 +32,11 @@ const DashboardHome = () => {
     };
 
     fetchStats();
-  }, []);
+  }, [token]);
 
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">Dashboard Overview</h1>
-
       <div className="stats-grid">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
@@ -55,8 +59,6 @@ const DashboardHome = () => {
           );
         })}
       </div>
-
-      {/* Map Section */}
       <div className="map-container">
         <h2 className="widget-title">Map Overview</h2>
         <iframe
