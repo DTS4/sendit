@@ -1,7 +1,7 @@
 /* General Styles */
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #f8f9fa;
+  background-color: white;
   margin: 0;
   padding: 0;
 }
@@ -17,7 +17,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: whitesmoke;
+  background-color: white;
   padding: 15px 20px;
   color: white;
 }
@@ -33,12 +33,13 @@ body {
 .sidebar {
   width: 14VW;
   height: 100vh;
-  background: whitesmoke;
-  padding: 20px;
+  background: white;
+  padding: 15px;
   color: white;
   position: fixed;
   left: 0;
   top: 0;
+
 }
 
 .sidebar a {
