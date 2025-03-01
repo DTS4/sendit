@@ -59,7 +59,7 @@ const Settings = () => {
         </div>
 
         {/* Dark Mode Toggle */}
-        <div className="settings-item">
+        {/* <div className="settings-item">
           <div className="settings-info">
             <h2 className="settings-subtitle">Dark Mode</h2>
             <p className="settings-description">Enable dark mode for the interface</p>
@@ -72,7 +72,7 @@ const Settings = () => {
             />
             <span className="slider"></span>
           </label>
-        </div>
+        </div> */}
       </div>
     </div>
   );
