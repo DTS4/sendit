@@ -1,19 +1,29 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import UserContext from './context/UserContext';
-import UserDashboard from './pages/UserDashboard';
-import { UserProvider } from './context/UserContext';
+import { AuthProvider } from './context/AuthContext'; // ✅ Use AuthProvider instead
+import DashboardPage from './pages/DashboardPage';
 import './App.css';
 
 
 
 function App() {
   return (
-    <Router>
-      <UserProvider>
-        <UserDashboard />
-      </UserProvider>
-    </Router>
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
   );
 }
 
