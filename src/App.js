@@ -1,13 +1,7 @@
-
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import HomePage from './component/HomePage';
-import SignUp from './component/SignUp';
-import Login from './component/Login';
-import ForgotPassword from './component/ForgotPassword';
-import ResetPassword from './component/ResetPassword';
-import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './component/ProtectedRoute';
-
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext'; // ✅ Use AuthProvider instead
+import DashboardPage from './pages/DashboardPage';
 import './App.css';
 
 
