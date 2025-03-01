@@ -7,8 +7,7 @@ import ForgotPassword from './component/ForgotPassword';
 import ResetPassword from './component/ResetPassword';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './component/ProtectedRoute';
-import UserDashboard from './component/UserDashboard'; 
-import AdminDashboard from './component/AdminDashboard'; 
+
 import './App.css';
 
 
@@ -31,7 +30,7 @@ function App() {
            path="/dashboard/user"
            element={<ProtectedRoute role="user" />}
          >
-           <Route index element={<UserDashboard />} />
+           <Route index element={<u/>} />
          </Route>
 
 
@@ -39,7 +38,7 @@ function App() {
            path="/dashboard/admin"
            element={<ProtectedRoute role="admin" />}
          >
-           <Route index element={<AdminDashboard />} />
+           <Route index element={<a/>} />
          </Route>
 
 
