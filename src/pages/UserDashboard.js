@@ -4,7 +4,7 @@ import UserHeader from '../components/Dashboard/UserHeader';
 import UserOrders from '../components/Dashboard/UserOrders';
 import UserItems from '../components/Dashboard/UserItems';
 import UserNewOrder from '../components/Dashboard/UserNewOrder';
-import UserReceived from '../components/Dashboard/UserReceived';
+// import UserReceived from '../components/Dashboard/UserReceived';
 import UserCancelled from '../components/Dashboard/UserCancelled';
 import UserInTransit from '../components/Dashboard/UserInTransit';
 import UserDelivered from '../components/Dashboard/UserDelivered';
@@ -13,7 +13,7 @@ import '../styles/UserInTransit.css';
 import '../styles/UserDelivered.css';
 import '../styles/UserOrders.css';
 import '../styles/UserItems.css';
-import '../styles/UserNewOrder.css';
+// import '../styles/UserNewOrder.css';
 import '../styles/UserSidebar.css';
 import '../styles/UserHeader.css';
 import '../styles/UserDashboard.css'; 
@@ -29,8 +29,8 @@ const UserDashboard = () => {
         return <UserItems />;
       case 'new-order':
         return <UserNewOrder />;
-      case 'received':
-        return <UserReceived />;
+      // case 'received':
+      //   return <UserReceived />;
       case 'cancelled':
         return <UserCancelled />;
       case 'in-transit':

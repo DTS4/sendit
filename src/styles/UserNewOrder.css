@@ -1,129 +1,269 @@
-.order-container {
-    padding: 20px;
-  }
-  
-  .order-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 20px;
-    justify-self: center;
-  }
-  
-  .steps-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .step {
-    display: flex;
-    align-items: center;
-    color: #999;
-  }
-  
-  .step.active {
-    color: #007bff;
-  }
-  
-  .step-number {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    background-color: #f0f0f0;
-  }
-  
-  .step.active .step-number {
-    border-color: #007bff;
-    background-color: #e6f2ff;
-  }
-  
-  .step-label {
-    margin-left: 8px;
-    font-size: 14px;
-    font-weight: 500;
-  }
-  
-  .step-line {
-    flex-grow: 1;
-    height: 2px;
-    background-color: #ccc;
-    margin: 0 10px;
-  }
-  
-  .step-line.active-line {
-    background-color: #007bff;
-  }
-  
-  .order-box {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-  }
-  
-  .order-section {
-    margin-bottom: 20px;
-  }
-  
-  .section-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  .order-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  .back-button,
-  .next-button {
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .back-button {
-    border: 1px solid #ccc;
-    background-color: white;
-    color: #333;
-  }
-  
-  .back-button:hover {
-    background-color: #f8f8f8;
-  }
-  
-  .next-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-  }
-  
-  .next-button:hover {
-    background-color: #0056b3;
-  }
+/* Reset default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  .create-order-button {
-    justify-self: center;
-    right: 100px;
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    background-color: #007bff;
-    color: white;
-    border: none;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
+/* Base container styles */
+.container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #EEF2FF, #E0E7FF);
+  padding: 1.5rem;
+}
+
+/* Layout wrapper for form and map */
+.layout-wrapper {
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Form section */
+.form-section {
+  flex: 1;
+  max-width: 48rem;
+}
+
+/* Map section */
+.map-section {
+  flex: 1;
+  height: 600px; /* Adjust height as needed */
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Card styles */
+.card {
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+/* Header styles */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.header-icon {
+  width: 2rem;
+  height: 2rem;
+  color: #4F46E5;
+}
+
+.header-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1F2937;
+}
+
+/* Form styles */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
   }
-  
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.form-label-icon {
+  width: 1rem;
+  height: 1rem;
+  color: #6366F1;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #D1D5DB;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #6366F1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #D1D5DB;
+  border-radius: 0.5rem;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-textarea:focus {
+  outline: none;
+  border-color: #6366F1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #D1D5DB;
+  border-radius: 0.5rem;
+  background-color: white;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: #6366F1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* Button styles */
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+.button-primary {
+  background-color: #4F46E5;
+  color: white;
+}
+
+.button-primary:hover {
+  background-color: #4338CA;
+}
+
+.button-success {
+  background-color: #059669;
+  color: white;
+}
+
+.button-success:hover {
+  background-color: #047857;
+}
+
+.button-secondary {
+  background-color: #E5E7EB;
+  color: #1F2937;
+}
+
+.button-secondary:hover {
+  background-color: #D1D5DB;
+}
+
+.button-full {
+  width: 100%;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal {
+  background-color: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  max-width: 42rem;
+  width: 100%;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1F2937;
+}
+
+.modal-icon {
+  width: 2rem;
+  height: 2rem;
+  color: #059669;
+}
+
+.modal-content {
+  margin-bottom: 1.5rem;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.modal-field {
+  margin-bottom: 0.5rem;
+}
+
+.modal-label {
+  font-size: 0.875rem;
+  color: #6B7280;
+}
+
+.modal-value {
+  font-weight: 500;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.modal-button {
+  flex: 1;
+}
