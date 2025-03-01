@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Package2, MapPin, Clock, Info, Truck, CheckCircle2 } from 'lucide-react';
 import '../../styles/UserNewOrder.css';
+// import { Bell } from "lucide-react";
+
 
 
 const initialParcelDetails = {
@@ -80,6 +82,8 @@ export default function App() {
     }));
   };
 
+
+
   return (
     <div className="container">
       <div className="layout-wrapper">
@@ -88,7 +92,25 @@ export default function App() {
           <div className="card">
             <div className="header">
               <Package2 className="header-icon" />
-              <h1 className="header-title">Create Parcel Order</h1>
+              <h1 className="header-title"></h1>
+
+              {/* <div className="header-icons">
+          <button className="notification-button">
+            <Bell className="notification-icon" />
+            <span className="notification-badge">3</span>
+          </button>
+          </div> */}
+
+
+              <div className="user-info">
+            <img
+              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+              alt="User avatar"
+              className="user-avatar"
+            />
+            <span className="user-name">Bobb</span>
+          </div>
+
             </div>
 
             <form onSubmit={handleSubmit} className="form">
