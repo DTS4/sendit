@@ -1,0 +1,151 @@
+.in-transit-container {
+    padding: 20px;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .orders-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .order-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .order-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .order-number {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .status-badge {
+    background-color: #e0f2ff;
+    color: #007bff;
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+  }
+  
+  .order-details {
+    margin-bottom: 15px;
+  }
+  
+  .detail-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .label {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .value {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .tracking-updates {
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+    margin-top: 15px;
+  }
+  
+  .updates-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 10px;
+  }
+  
+  .updates-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .update-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+  
+  .update-date {
+    color: #666;
+  }
+  
+  .update-status {
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .order-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  .track-button {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .track-button:hover {
+    background-color: #f8f8f8;
+  }
+  
+  .details-button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .details-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .icon {
+    width: 24px;
+    height: 24px;
+    color: #007bff;
+  }
+  
+  .icon-small {
+    width: 20px;
+    height: 20px;
+    color: #666;
+  }
+  

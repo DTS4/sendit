@@ -13,41 +13,24 @@ import './App.css';
 
 
 function App() {
- return (
-   <AuthProvider>
-     <Router>
-       <Routes>
-         {/* Public Routes */}
-         <Route path="/" element={<HomePage />} />
-         <Route path="/signup/:role" element={<SignUp />} />
-         <Route path="/login" element={<Login />} />
-         <Route path="/forgot-password" element={<ForgotPassword />} />
-         <Route path="/reset-password/:token" element={<ResetPassword />} />
-
-
-         {/* Protected Routes */}
-         <Route
-           path="/dashboard/user"
-           element={<ProtectedRoute role="user" />}
-         >
-           <Route index element={<u/>} />
-         </Route>
-
-
-         <Route
-           path="/dashboard/admin"
-           element={<ProtectedRoute role="admin" />}
-         >
-           <Route index element={<a/>} />
-         </Route>
-
-
-         {/* Fallback Route (Optional) */}
-         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
-       </Routes>
-     </Router>
-   </AuthProvider>
- );
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
 }
 
 
