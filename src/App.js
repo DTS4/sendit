@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext'; // ✅ Use AuthProvider instead
+import { AuthProvider } from './context/AuthContext'; 
 import DashboardPage from './pages/DashboardPage';
 import './App.css';
 
