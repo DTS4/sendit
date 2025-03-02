@@ -1,11 +1,11 @@
 import React from 'react';
 import { Bell, User, Search } from 'lucide-react';
-import '../../styles/UserHeader.css'; // Import the CSS file
+
 
 const UserHeader = () => {
   return (
-    <header className="header">
-      <div className="header-container">
+    <header className="headeer">
+      <div className="header-containeer">
         <div className="search-container">
           <div className="search-box">
             <input

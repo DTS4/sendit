@@ -1,31 +1,48 @@
-import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext'; 
-import DashboardPage from './pages/DashboardPage';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './component/HomePage';
+import SignUp from './component/SignUp';
+import Login from './component/Login';
+import ForgotPassword from './component/ForgotPassword';
+import ResetPassword from './component/ResetPassword';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './component/ProtectedRoute';
+import UserDashboard from './component/UserDashboard';
+import DashboardPage from './component/DashboardPage';
 import './App.css';
-
-
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signup/:role" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+
+          {/* Protected Routes */}
+          <Route
+            path="/dashboard/user"
+            element={<ProtectedRoute role="user" />}
+          >
+            <Route index element={<UserDashboard />} />
+          </Route>
+
+          <Route
+            path="/dashboard/admin/*" // Add trailing * to match nested routes
+            element={<ProtectedRoute role="admin" />}
+          >
+            <Route index element={<DashboardPage />} />
+          </Route>
+
+          {/* Fallback Route (Optional) */}
+          <Route path="*" element={<h1>404 - Page Not Found</h1>} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
-
 
 export default App;

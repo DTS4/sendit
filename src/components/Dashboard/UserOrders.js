@@ -1,5 +1,4 @@
 import React from 'react';
-//import './UserOrders.css';
 
 const UserOrders = () => {
   const orders = [

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import Sidebar from '../components/Dashboard/Sidebar';
 import Navbar from '../components/Dashboard/Navbar';
 import DashboardHome from '../components/Dashboard/DashboardHome';
@@ -12,26 +11,38 @@ import '../styles/Orders.css';
 import '../styles/Profile.css';
 import '../styles/Settings.css';
 import '../styles/Sidebar.css';
-import '../styles/Navbar.css'; 
+import '../styles/Navbar.css';
 import '../styles/DashboardHome.css';
 
-
-
 export default function DashboardPage() {
+  const [activeSection, setActiveSection] = useState('home');
+
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'home':
+        return <DashboardHome />;
+      case 'profile':
+        return <Profile />;
+      case 'analytics':
+        return <Analytics />;
+      case 'orders':
+        return <Orders />;
+      case 'settings':
+        return <Settings />;
+      default:
+        return <DashboardHome />;
+    }
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
-      <Sidebar />
+      <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
       <div className="flex-1 ml-64">
         <Navbar />
         <main className="mt-16 p-6">
-          <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={<DashboardHome />} />
-            <Route path="/dashboard/profile" element={<Profile />} />
-            <Route path="/dashboard/analytics" element={<Analytics />} />
-            <Route path="/dashboard/orders" element={<Orders />} />
-            <Route path="/dashboard/settings" element={<Settings />} />
-          </Routes>
+          <div className="dashboard-container">
+            {renderContent()}
+          </div>
         </main>
       </div>
     </div>

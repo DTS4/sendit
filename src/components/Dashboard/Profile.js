@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Camera, Mail, User } from "lucide-react";
-import "../../styles/Profile.css";
 
 const Profile = () => {
   const [user, setUser] = useState({

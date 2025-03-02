@@ -1,6 +1,6 @@
 import React from 'react';
 import { CheckCircle, Star } from 'lucide-react';
-//import './UserDelivered.css'; // Import the CSS file
+
 
 const UserDelivered = () => {
   const deliveredOrders = [

@@ -5,11 +5,13 @@ const AuthContext = createContext({
   user: null,
   login: () => {},
   logout: () => {},
+  isAuthenticated: false, // Add a flag for authentication status
 });
 
 // AuthProvider component
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Check localStorage for user data on initial load
   useEffect(() => {
@@ -18,6 +20,7 @@ export function AuthProvider({ children }) {
       try {
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser);
+        setIsAuthenticated(true); // Set authentication status
       } catch (error) {
         console.error('Failed to parse user data from localStorage:', error);
         localStorage.removeItem('user'); // Clear invalid data
@@ -30,6 +33,7 @@ export function AuthProvider({ children }) {
     try {
       console.log('Logging in user:', userData); // Debugging (remove in production)
       setUser(userData);
+      setIsAuthenticated(true); // Set authentication status
       localStorage.setItem('user', JSON.stringify(userData)); // Persist user data
     } catch (error) {
       console.error('Login error:', error);
@@ -42,6 +46,7 @@ export function AuthProvider({ children }) {
     try {
       console.log('Logging out user'); // Debugging (remove in production)
       setUser(null);
+      setIsAuthenticated(false); // Clear authentication status
       localStorage.removeItem('user'); // Clear user data
     } catch (error) {
       console.error('Logout error:', error);
@@ -50,7 +55,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );

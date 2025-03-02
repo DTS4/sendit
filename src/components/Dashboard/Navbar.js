@@ -1,17 +1,17 @@
 import { Bell, Search, User } from "lucide-react";
-import "../../styles/Navbar.css";
+
 
 const Navbar = () => {
   return (
-    <nav className="navbar">
-      <div className="search-container">
-        <input type="text" placeholder="Search..." className="search-input" />
+    <nav className="navbar1">
+      <div className="search-container1">
+        <input type="text" placeholder="Search..." className="search-input1" />
         <button className="search-button">
-          <Search className="search-icon" />
+          <Search className="search-icon1" />
         </button>
       </div>
       
-      <div className="user-actions">
+      <div className="user-actions1">
         <button className="notifications-button">
           <Bell className="icon" />
           <span className="notifications-badge">3</span>

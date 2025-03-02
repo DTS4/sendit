@@ -25,13 +25,13 @@
   color: black;
 }
 
-.nav-list {
+.navv-list {
   list-style: none;
   padding: 0;
   margin: 1rem 0;
 }
 
-.nav-item {
+.navv-item {
   display: flex;
   align-items: center;
   gap: 1.5rem; /* Increased spacing */
@@ -42,16 +42,16 @@
   border-radius: 0.5rem;
 }
 
-.nav-item:hover {
+.navv-item:hover {
   background: #374151;
 }
 
-.nav-icon {
+.navv-icon {
   width: 1.25rem;
   height: 1.25rem;
 }
 
-.nav-text {
+.navv-text {
   margin-left: 1rem; /* Additional spacing */
 }
 
@@ -68,6 +68,6 @@
   transition: color 0.2s;
 }
 
-.logout-button:hover {
+.logout-button:hover1 {
   color: #ef4444;
 }

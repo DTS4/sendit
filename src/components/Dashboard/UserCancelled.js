@@ -1,6 +1,6 @@
 import React from 'react';
 import { XCircle } from 'lucide-react';
-import '../../styles/UserCancelled.css'; // Import the CSS file
+
 
 const UserCancelled = () => {
   const cancelledOrders = [

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Truck, MapPin } from 'lucide-react';
-//import './UserInTransit.css'; // Import the CSS file
 
 const UserInTransit = () => {
   const inTransitOrders = [

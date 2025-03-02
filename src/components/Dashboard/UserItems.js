@@ -1,6 +1,5 @@
 import React from 'react';
 import { ShoppingBag, Star } from 'lucide-react';
-//import './UserItems.css'; // Import the CSS file
 
 const UserItems = () => {
   const items = [

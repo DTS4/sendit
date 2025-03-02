@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 import { Package2, MapPin, Clock, Info, Truck, CheckCircle2 } from 'lucide-react';
-import '../../styles/UserNewOrder.css';
-// import { Bell } from "lucide-react";
-
-
 
 const initialParcelDetails = {
   pickup_location: '', // Changed to snake_case

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Users, DollarSign, ShoppingBag, TrendingUp } from 'lucide-react';
-import "../../styles/DashboardHome.css";
 import { useAuth } from "../../context/AuthContext"; // Check the correct path
 
 const DashboardHome = () => {
