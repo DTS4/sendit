@@ -1,22 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CheckCircle, Star } from 'lucide-react';
-//import './UserDelivered.css'; // Import the CSS file
+import axios from 'axios';
 
 const UserDelivered = () => {
-  const deliveredOrders = [
-    {
-      id: 1,
-      orderNumber: '#ORD-2024-004',
-      deliveryDate: '2024-03-14',
-      items: [
-        { name: 'Wireless Earbuds', quantity: 1, reviewed: false },
-        { name: 'Phone Case', quantity: 2, reviewed: true }
-      ],
-      total: 159.97,
-      deliveryAddress: '123 Main St, New York, NY 10001'
-    },
-    // Add more delivered orders
-  ];
+  const [deliveredOrders, setDeliveredOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch delivered orders from backend
+  useEffect(() => {
+    const fetchDeliveredOrders = async () => {
+      try {
+        const response = await axios.get('https://sendit-backend-j83j.onrender.com');  // Replace with your backend URL
+        console.log(response.data);  // Debugging line
+        setDeliveredOrders(Array.isArray(response.data) ? response.data : []);
+      } catch (err) {
+        setError('Failed to fetch delivered orders');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDeliveredOrders();
+  }, []);
+
+  if (loading) {
+    return <div className="loading">Loading delivered orders...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
 
   return (
     <div className="delivered-container">

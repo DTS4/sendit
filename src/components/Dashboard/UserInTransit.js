@@ -1,30 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Truck, MapPin } from 'lucide-react';
-//import './UserInTransit.css'; // Import the CSS file
+import axios from 'axios';  // Import axios for API calls
+import '../../styles/UserInTransit.css'; // Import the CSS file
 
 const UserInTransit = () => {
-  const inTransitOrders = [
-    {
-      id: 1,
-      orderNumber: '#ORD-2024-003',
-      estimatedDelivery: '2024-03-20',
-      currentLocation: 'Distribution Center, New York',
-      trackingNumber: 'TRK123456789',
-      status: 'In Transit',
-      updates: [
-        { date: '2024-03-15', status: 'Package picked up' },
-        { date: '2024-03-16', status: 'Arrived at sorting facility' }
-      ]
-    },
-    // Add more in-transit orders
-  ];
+  const [inTransitOrders, setInTransitOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch in-transit orders from backend
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        // Replace this URL with your backend endpoint
+        const response = await axios.get('https://sendit-backend-j83j.onrender.com');
+        console.log('API response:', response.data); // Log the response to verify its structure
+        setInTransitOrders(Array.isArray(response.data) ? response.data : []);
+      } catch (err) {
+        console.error('Error fetching in-transit orders:', err);
+        setError('Failed to load orders.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
 
   return (
     <div className="in-transit-container">
       <h2 className="title">In Transit Orders</h2>
 
       <div className="orders-list">
-        {inTransitOrders.map((order) => (
+        {Array.isArray(inTransitOrders) && inTransitOrders.map((order) => (
           <div key={order.id} className="order-card">
             <div className="order-header">
               <div className="order-info">

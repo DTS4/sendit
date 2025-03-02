@@ -1,19 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Star } from 'lucide-react';
-//import './UserItems.css'; // Import the CSS file
+import axios from 'axios';  // Import axios for API calls
+import '../../styles/UserItems.css'; // Import the CSS file
 
 const UserItems = () => {
-  const items = [
-    {
-      id: 1,
-      name: 'Wireless Headphones',
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80',
-      price: 199.99,
-      rating: 4.5,
-      purchaseDate: '2024-02-15'
-    },
-    // Add more items as needed
-  ];
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch items from backend
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        // Replace this URL with your backend endpoint
+        const response = await axios.get('https://sendit-backend-j83j.onrender.com');
+        setItems(Array.isArray(response.data) ? response.data : []);
+      } catch (err) {
+        console.error('Error fetching items:', err);
+        setError('Failed to load items.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="error">{error}</div>;
+  }
 
   return (
     <div className="items-container">
