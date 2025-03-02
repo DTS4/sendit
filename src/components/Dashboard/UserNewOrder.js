@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import { Package2, MapPin, Clock, Info, Truck, CheckCircle2 } from 'lucide-react';
 import '../../styles/UserNewOrder.css';
-// import { Bell } from "lucide-react";
-
-
 
 const initialParcelDetails = {
-  pickup_location: '', // Changed to snake_case
+  pickup_location: '',
   destination: '',
   weight: '',
   description: '',
-  delivery_speed: 'standard', // Changed to snake_case
+  delivery_speed: 'standard',
 };
 
 export default function App() {
@@ -22,53 +19,30 @@ export default function App() {
     e.preventDefault();
     setShowConfirmation(true);
   };
-
   const handleConfirmOrder = async () => {
     setIsLoading(true);
     try {
-      // Log the request payload for debugging
-      console.log('Request payload:', parcelDetails);
-
       const response = await fetch('https://sendit-backend-j83j.onrender.com/parcels', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`, // ✅ Fixed syntax
         },
         body: JSON.stringify(parcelDetails),
       });
-      
-      // Read the response body only once
-      const responseData = await response.text(); // Read as text first
-
-      let data;
-      try {
-        // Attempt to parse the response as JSON
-        data = JSON.parse(responseData);
-      } catch (jsonError) {
-        // If the response is not JSON, handle it as an HTML error page
-        console.error('Non-JSON response:', responseData);
-
-        // Extract the error message from the HTML <p> tag
-        const errorMessage = responseData.match(/<p>(.*?)<\/p>/)?.[1] || 'Server error: Invalid response format';
-        throw new Error(errorMessage);
-      }
-
-      // Log the response data for debugging
-      console.log('Response data:', data);
-
-      // Check if the response is OK (status code 2xx)
+  
+      const data = await response.json();
+  
       if (!response.ok) {
         throw new Error(data.message || 'Failed to create order');
       }
-
+  
       // Reset the form and show success message
       setShowConfirmation(false);
       setParcelDetails(initialParcelDetails);
       alert('Order created successfully!');
     } catch (error) {
       console.error('Error creating order:', error);
-      alert('Failed to create order. Please try again.');
+      alert(`Failed to create order: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
@@ -82,8 +56,6 @@ export default function App() {
     }));
   };
 
-
-
   return (
     <div className="container">
       <div className="layout-wrapper">
@@ -93,24 +65,14 @@ export default function App() {
             <div className="header">
               <Package2 className="header-icon" />
               <h1 className="header-title"></h1>
-
-              {/* <div className="header-icons">
-          <button className="notification-button">
-            <Bell className="notification-icon" />
-            <span className="notification-badge">3</span>
-          </button>
-          </div> */}
-
-
               <div className="user-info">
-            <img
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-              alt="User avatar"
-              className="user-avatar"
-            />
-            <span className="user-name">Bobb</span>
-          </div>
-
+                <img
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  alt="User avatar"
+                  className="user-avatar"
+                />
+                <span className="user-name">Bobb</span>
+              </div>
             </div>
 
             <form onSubmit={handleSubmit} className="form">
@@ -122,7 +84,7 @@ export default function App() {
                   </label>
                   <input
                     type="text"
-                    name="pickup_location" // Changed to snake_case
+                    name="pickup_location"
                     value={parcelDetails.pickup_location}
                     onChange={handleInputChange}
                     className="form-input"
@@ -173,7 +135,7 @@ export default function App() {
                     Delivery Speed
                   </label>
                   <select
-                    name="delivery_speed" // Changed to snake_case
+                    name="delivery_speed"
                     value={parcelDetails.delivery_speed}
                     onChange={handleInputChange}
                     className="form-select"

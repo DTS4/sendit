@@ -12,7 +12,7 @@ const UserOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('https://sendit-backend-j83j.onrender.com', {
+        const response = await fetch('https://sendit-backend-j83j.onrender.com/orders', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
