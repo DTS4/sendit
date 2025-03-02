@@ -1,37 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import { Users, DollarSign, ShoppingBag, TrendingUp } from 'lucide-react';
-import { useAuth } from "../../context/AuthContext"; // Check the correct path
+import { useAuth } from "../../context/AuthContext";
 
 const DashboardHome = () => {
   const [stats, setStats] = useState([]);
-  const { token } = useAuth(); // Get the token from AuthContext
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { token } = useAuth();
 
   // Fetch stats from the backend
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        setLoading(true);
+        setError(null);
+
         const response = await fetch("https://sendit-backend-j83j.onrender.com/stats", {
           headers: {
-            Authorization: `Bearer ${token}`, // Fixed syntax
+            Authorization: `Bearer ${token}`,
           },
         });
+
         if (!response.ok) {
-          throw new Error("Failed to fetch stats");
+          throw new Error(`Failed to fetch stats: ${response.statusText}`);
         }
+
         const data = await response.json();
         setStats([
-          { label: 'Total Customers', value: data.total_deliveries || "Loading...", icon: Users, trend: '+12.5%', color: 'blue' },
-          { label: 'Total Revenue', value: `$${data.delivered_orders || "Loading..."}`, icon: DollarSign, trend: '+8.2%', color: 'green' },
-          { label: 'Total Orders', value: data.pending_orders || "Loading...", icon: ShoppingBag, trend: '+3.8%', color: 'purple' },
-          { label: 'Growth Rate', value: `${data.in_transit_orders || "Loading..."}%`, icon: TrendingUp, trend: '+2.4%', color: 'yellow' },
+          { label: 'Total Customers', value: data.total_deliveries || "N/A", icon: Users, trend: '+12.5%', color: 'blue' },
+          { label: 'Total Revenue', value: `$${data.delivered_orders || "N/A"}`, icon: DollarSign, trend: '+8.2%', color: 'green' },
+          { label: 'Total Orders', value: data.pending_orders || "N/A", icon: ShoppingBag, trend: '+3.8%', color: 'purple' },
+          { label: 'Growth Rate', value: `${data.in_transit_orders || "N/A"}%`, icon: TrendingUp, trend: '+2.4%', color: 'yellow' },
         ]);
       } catch (error) {
         console.error("Error fetching stats:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchStats();
   }, [token]);
+
+  if (loading) {
+    return <div className="dashboard-container">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="dashboard-container">Error: {error}</div>;
+  }
 
   return (
     <div className="dashboard-container">

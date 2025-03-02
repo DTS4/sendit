@@ -15,6 +15,7 @@ import '../styles/UserItems.css';
 import '../styles/UserSidebar.css';
 import '../styles/UserHeader.css';
 import '../styles/UserDashboard.css';
+import '../styles/UserNewOrder.css';
 
 const UserDashboard = () => {
   const [activeSection, setActiveSection] = useState('orders');

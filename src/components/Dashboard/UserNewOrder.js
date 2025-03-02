@@ -81,14 +81,14 @@ export default function App() {
 
 
   return (
-    <div className="container">
-      <div className="layout-wrapper">
+    <div className="container2">
+      <div className="layout-wrapper2">
         {/* Form Section */}
-        <div className="form-section">
-          <div className="card">
-            <div className="header">
-              <Package2 className="header-icon" />
-              <h1 className="header-title"></h1>
+        <div className="form-section2">
+          <div className="card2">
+            <div className="header2">
+              <Package2 className="header-icon2" />
+              <h1 className="header-title2"></h1>
 
               {/* <div className="header-icons">
           <button className="notification-button">
@@ -109,11 +109,11 @@ export default function App() {
 
             </div>
 
-            <form onSubmit={handleSubmit} className="form">
-              <div className="form-grid">
-                <div className="form-group">
-                  <label className="form-label">
-                    <MapPin className="form-label-icon" />
+            <form onSubmit={handleSubmit} className="form2">
+              <div className="form-grid2">
+                <div className="form-group2">
+                  <label className="form-label2">
+                    <MapPin className="form-label-icon2" />
                     Pickup Location
                   </label>
                   <input
@@ -127,9 +127,9 @@ export default function App() {
                   />
                 </div>
 
-                <div className="form-group">
-                  <label className="form-label">
-                    <MapPin className="form-label-icon" />
+                <div className="form-group2">
+                  <label className="form-label2">
+                    <MapPin className="form-label-icon2" />
                     Destination
                   </label>
                   <input
@@ -144,10 +144,10 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="form-grid">
-                <div className="form-group">
-                  <label className="form-label">
-                    <Info className="form-label-icon" />
+              <div className="form-grid2">
+                <div className="form-group2">
+                  <label className="form-label2">
+                    <Info className="form-label-icon2" />
                     Weight (kg)
                   </label>
                   <input
@@ -163,9 +163,9 @@ export default function App() {
                   />
                 </div>
 
-                <div className="form-group">
-                  <label className="form-label">
-                    <Clock className="form-label-icon" />
+                <div className="form-group2">
+                  <label className="form-label2">
+                    <Clock className="form-label-icon2" />
                     Delivery Speed
                   </label>
                   <select
@@ -182,9 +182,9 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">
-                  <Package2 className="form-label-icon" />
+              <div className="form-group2">
+                <label className="form-label2">
+                  <Package2 className="form-label-icon2" />
                   Parcel Description
                 </label>
                 <textarea
