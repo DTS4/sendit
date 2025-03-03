@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle, Star } from 'lucide-react';
+import { CheckCircle, Star, X } from 'lucide-react';
 import axios from 'axios';
+import '../../styles/UserDelivered.css'; // Import the CSS file
 
 const UserDelivered = () => {
   const [deliveredOrders, setDeliveredOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null); // Track the selected order for details
 
   // Fetch delivered orders from the same backend as UserOrders
   useEffect(() => {
@@ -29,6 +31,16 @@ const UserDelivered = () => {
 
     fetchDeliveredOrders();
   }, []);
+
+  // Function to handle viewing order details
+  const handleViewDetails = (order) => {
+    setSelectedOrder(order);
+  };
+
+  // Function to close the order details modal
+  const handleCloseDetails = () => {
+    setSelectedOrder(null);
+  };
 
   if (loading) {
     return <div className="loading">Loading delivered orders...</div>;
@@ -91,12 +103,62 @@ const UserDelivered = () => {
               
               <div className="total-section">
                 <span className="total-amount">Total: ${order.cost.toFixed(2) || 'N/A'}</span>
-                <button className="view-details-button">View Details</button>
+                <button className="view-details-button" onClick={() => handleViewDetails(order)}>
+                  View Details
+                </button>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Modal for displaying order details */}
+      {selectedOrder && (
+        <div className="order-details-modal">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h3>Order Details</h3>
+              <button className="close-button" onClick={handleCloseDetails}>
+                <X className="icon" />
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="detail-row">
+                <span className="label">Tracking ID:</span>
+                <span className="value">{selectedOrder.tracking_id || 'N/A'}</span>
+              </div>
+              <div className="detail-row">
+                <span className="label">Delivery Date:</span>
+                <span className="value">{new Date(selectedOrder.date).toLocaleDateString() || 'N/A'}</span>
+              </div>
+              <div className="detail-row">
+                <span className="label">Delivery Address:</span>
+                <span className="value">{selectedOrder.destination || 'N/A'}</span>
+              </div>
+              <div className="detail-row">
+                <span className="label">Total Amount:</span>
+                <span className="value">${selectedOrder.cost.toFixed(2) || 'N/A'}</span>
+              </div>
+              <div className="items-section">
+                <h4>Items:</h4>
+                {selectedOrder.items && selectedOrder.items.length > 0 ? (
+                  selectedOrder.items.map((item, index) => (
+                    <div key={index} className="item-row">
+                      <div className="item-info">
+                        <span className="item-name">{item.name}</span>
+                        <span className="item-quantity">x{item.quantity}</span>
+                      </div>
+                      <span className="item-price">${item.price.toFixed(2)}</span>
+                    </div>
+                  ))
+                ) : (
+                  <p>No items available.</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
