@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
@@ -18,7 +18,8 @@ export default function App() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [distance, setDistance] = useState(""); // State to store calculated distance
-  const [map, setMap] = useState(null);
+  const mapRef = useRef(null); // Ref to store the map instance
+  const routingControlRef = useRef(null); // Ref to store the routing control instance
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -29,18 +30,26 @@ export default function App() {
     }));
   };
 
-  // Initialize the map
+  // Initialize the map only once when the component mounts
   useEffect(() => {
-    if (!map) {
+    if (!mapRef.current) {
       const osmMap = L.map("map").setView([0, 0], 2); // Default center
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution:
           '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       }).addTo(osmMap);
-      setMap(osmMap);
+      mapRef.current = osmMap; // Store the map instance in the ref
     }
-  }, [map]);
+
+    // Cleanup function to remove the map when the component unmounts
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+    };
+  }, []);
 
   // Calculate distance using OSRM API
   const calculateDistance = async () => {
@@ -78,35 +87,32 @@ export default function App() {
       }
 
       // Calculate the distance in kilometers
-      const routeDistance =
-        osrmData.routes[0].legs[0].distance / 1000; // Distance in kilometers
+      const routeDistance = osrmData.routes[0].legs[0].distance / 1000; // Distance in kilometers
       setDistance(routeDistance.toFixed(2)); // Update distance state
 
       // Update the map with the route
-      if (map) {
+      if (mapRef.current) {
         // Clear any existing routes
-        map.eachLayer((layer) => {
-          if (layer instanceof L.Routing.Control) {
-            map.removeControl(layer);
-          }
-        });
+        if (routingControlRef.current) {
+          mapRef.current.removeControl(routingControlRef.current);
+        }
 
         // Add the new route
-        const routingControl = L.Routing.control({
+        routingControlRef.current = L.Routing.control({
           waypoints: [
             L.latLng(pickupCoords.lat, pickupCoords.lon),
             L.latLng(deliveryCoords.lat, deliveryCoords.lon),
           ],
           routeWhileDragging: false,
           createMarker: () => null, // Disable markers
-        }).addTo(map);
+        }).addTo(mapRef.current);
 
         // Fit bounds to show the entire route
         const bounds = L.latLngBounds([
           [pickupCoords.lat, pickupCoords.lon],
           [deliveryCoords.lat, deliveryCoords.lon],
         ]);
-        map.fitBounds(bounds, { padding: [50, 50] });
+        mapRef.current.fitBounds(bounds, { padding: [50, 50] });
       }
     } catch (error) {
       console.error("Error calculating distance:", error);

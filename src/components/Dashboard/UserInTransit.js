@@ -8,7 +8,6 @@ const UserInTransit = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null); // Track the selected order for details
-  const [showTrackingModal, setShowTrackingModal] = useState(false); // Track visibility of tracking modal
 
   // Fetch in-transit orders from backend
   useEffect(() => {
@@ -49,17 +48,6 @@ const UserInTransit = () => {
   // Function to close the order details modal
   const handleCloseDetails = () => {
     setSelectedOrder(null);
-  };
-
-  // Function to handle tracking package
-  const handleTrackPackage = (order) => {
-    setSelectedOrder(order);
-    setShowTrackingModal(true);
-  };
-
-  // Function to close the tracking modal
-  const handleCloseTrackingModal = () => {
-    setShowTrackingModal(false);
   };
 
   if (loading) {
@@ -123,9 +111,6 @@ const UserInTransit = () => {
               </div>
 
               <div className="order-actions">
-                <button className="track-button" onClick={() => handleTrackPackage(order)}>
-                  Track Package
-                </button>
                 <button className="details-button" onClick={() => handleViewDetails(order)}>
                   View Details
                 </button>
@@ -186,55 +171,6 @@ const UserInTransit = () => {
                 <div className="modal-row">
                   <span className="label">Description:</span>
                   <span className="value">{selectedOrder.description || 'N/A'}</span>
-                </div>
-              </div>
-
-              <div className="modal-section">
-                <h3>Tracking Updates</h3>
-                {selectedOrder.updates && selectedOrder.updates.length > 0 ? (
-                  selectedOrder.updates.map((update, index) => (
-                    <div key={index} className="modal-row">
-                      <span className="label">{update.date || 'N/A'}:</span>
-                      <span className="value">{update.status || 'N/A'}</span>
-                    </div>
-                  ))
-                ) : (
-                  <p>No tracking updates available.</p>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Tracking Information Modal */}
-      {showTrackingModal && selectedOrder && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <div className="modal-header">
-              <h2>Tracking Information</h2>
-              <button className="close-button" onClick={handleCloseTrackingModal}>
-                <X className="icon" />
-              </button>
-            </div>
-
-            <div className="modal-content">
-              <div className="modal-section">
-                <div className="modal-row">
-                  <span className="label">Tracking Number:</span>
-                  <span className="value">{selectedOrder.tracking_id || 'N/A'}</span>
-                </div>
-                <div className="modal-row">
-                  <span className="label">Status:</span>
-                  <span className="value">{selectedOrder.status || 'N/A'}</span>
-                </div>
-                <div className="modal-row">
-                  <span className="label">Current Location:</span>
-                  <span className="value">{selectedOrder.current_location || 'N/A'}</span>
-                </div>
-                <div className="modal-row">
-                  <span className="label">Estimated Delivery:</span>
-                  <span className="value">{selectedOrder.estimated_delivery || 'N/A'}</span>
                 </div>
               </div>
 

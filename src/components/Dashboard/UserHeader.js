@@ -1,46 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import { Bell, User, Search } from 'lucide-react';
-import axios from 'axios';  // Import axios for API calls
+import { Bell, Search } from 'lucide-react'; // Removed User icon since avatar is removed
+import axios from 'axios'; // Import axios for API calls
 import '../../styles/UserHeader.css'; // Import the CSS file
 
 const UserHeader = () => {
-  const [user, setUser] = useState(null);
-  const [notifications, setNotifications] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [user, setUser] = useState(null); // State to store user data
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
 
-  // Fetch user data and notifications from backend
+  // Fetch user data from the backend
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUserData = async () => {
       try {
-        // Replace with your backend endpoints
-        const userResponse = await axios.get('http://localhost:5000/api/user');
-        const notificationsResponse = await axios.get('http://localhost:5000/api/notifications');
-        
-        setUser(userResponse.data);
-        setNotifications(notificationsResponse.data);
+        // Use the production backend URL
+        const backendUrl = process.env.REACT_APP_BACKEND_URL || 'https://sendit-backend-j83j.onrender.com';
+        const response = await axios.get(`${backendUrl}/user`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`, // Pass the JWT token
+          },
+        });
+
+        if (response.data && response.data.username) {
+          setUser(response.data); // Set the user data in state
+        } else {
+          throw new Error('Invalid user data received');
+        }
       } catch (err) {
-        console.error('Error fetching data:', err);
+        console.error('Error fetching user data:', err.message);
         setError('Failed to load user data');
       } finally {
-        setLoading(false);
+        setLoading(false); // Stop loading regardless of success or failure
       }
     };
 
-    fetchData();
-  }, []);
+    fetchUserData();
+  }, []); // Empty dependency array ensures this runs once on mount
 
   if (loading) {
-    return <div className="loading">Loading...</div>;
+    return <div className="loading">Loading...</div>; // Display loading state
   }
 
   if (error) {
-    return <div className="error">{error}</div>;
+    return <div className="error">{error}</div>; // Display error message
   }
 
   return (
     <header className="header">
       <div className="header-container">
+        {/* Search Container */}
         <div className="search-container">
           <div className="search-box">
             <input
@@ -48,25 +55,20 @@ const UserHeader = () => {
               placeholder="Search..."
               className="search-input"
             />
-            <Search className="search-icon" />
+            <Search className="search-icon" /> {/* Search icon */}
           </div>
         </div>
 
+        {/* Header Icons */}
         <div className="header-icons">
           <button className="notification-button">
             <Bell className="notification-icon" />
-            {notifications.length > 0 && (
-              <span className="notification-badge">{notifications.length}</span>
-            )}
+            {/* Placeholder for notifications badge */}
           </button>
-          
+
+          {/* User Info */}
           <div className="user-info">
-            <img
-              src={user?.avatar || 'https://via.placeholder.com/150'}  // Fallback if avatar is missing
-              alt="User avatar"
-              className="user-avatar"
-            />
-            <span className="user-name">{user?.name || 'Guest'}</span>
+            <span className="user-name">{user?.username || 'Guest'}</span>
           </div>
         </div>
       </div>
