@@ -1,64 +1,26 @@
-import React, { useState } from 'react';
-import { Package2, MapPin, Clock, Info, Truck, CheckCircle2 } from 'lucide-react';
-import '../../styles/UserNewOrder.css';
+import React, { useState, useEffect } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.js";
 
+// Initial state for parcel details
 const initialParcelDetails = {
-  pickup_location: '',
-  destination: '',
-  weight: '',
-  description: '',
-  delivery_speed: 'standard',
+  pickup_location: "",
+  destination: "",
+  weight: "",
+  description: "",
+  delivery_speed: "standard",
 };
 
 export default function App() {
   const [parcelDetails, setParcelDetails] = useState(initialParcelDetails);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [distance, setDistance] = useState(""); // State to store calculated distance
+  const [map, setMap] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setShowConfirmation(true);
-  };
-
-  const handleConfirmOrder = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch('https://sendit-backend-j83j.onrender.com/parcels', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(parcelDetails),
-      });
-
-      // Log the raw response for debugging
-      const rawResponse = await response.text();
-      console.log('Raw Response:', rawResponse);
-
-      // Attempt to parse the response as JSON
-      let data;
-      try {
-        data = JSON.parse(rawResponse);
-      } catch (error) {
-        throw new Error('Invalid response from server');
-      }
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to create order');
-      }
-
-      // Reset the form and show success message
-      setShowConfirmation(false);
-      setParcelDetails(initialParcelDetails);
-      alert('Order created successfully!');
-    } catch (error) {
-      console.error('Error creating order:', error);
-      alert(`Failed to create order: ${error.message}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setParcelDetails((prev) => ({
@@ -67,177 +29,247 @@ export default function App() {
     }));
   };
 
+  // Initialize the map
+  useEffect(() => {
+    if (!map) {
+      const osmMap = L.map("map").setView([0, 0], 2); // Default center
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(osmMap);
+      setMap(osmMap);
+    }
+  }, [map]);
+
+  // Calculate distance using OSRM API
+  const calculateDistance = async () => {
+    try {
+      const { pickup_location, destination } = parcelDetails;
+
+      if (!pickup_location || !destination) {
+        alert("Please enter both pickup and destination locations.");
+        return;
+      }
+
+      // Geocode locations using Nominatim API
+      const geocodeLocation = async (address) => {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+            address
+          )}&format=json&limit=1`
+        );
+        const data = await response.json();
+        if (!data.length) throw new Error(`Location not found: ${address}`);
+        return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
+      };
+
+      const pickupCoords = await geocodeLocation(pickup_location);
+      const deliveryCoords = await geocodeLocation(destination);
+
+      // Call OSRM API for route
+      const osrmResponse = await fetch(
+        `http://router.project-osrm.org/route/v1/driving/${pickupCoords.lon},${pickupCoords.lat};${deliveryCoords.lon},${deliveryCoords.lat}?overview=false`
+      );
+      const osrmData = await osrmResponse.json();
+
+      if (!osrmData.routes || osrmData.routes.length === 0) {
+        throw new Error("Route could not be calculated");
+      }
+
+      // Calculate the distance in kilometers
+      const routeDistance =
+        osrmData.routes[0].legs[0].distance / 1000; // Distance in kilometers
+      setDistance(routeDistance.toFixed(2)); // Update distance state
+
+      // Update the map with the route
+      if (map) {
+        // Clear any existing routes
+        map.eachLayer((layer) => {
+          if (layer instanceof L.Routing.Control) {
+            map.removeControl(layer);
+          }
+        });
+
+        // Add the new route
+        const routingControl = L.Routing.control({
+          waypoints: [
+            L.latLng(pickupCoords.lat, pickupCoords.lon),
+            L.latLng(deliveryCoords.lat, deliveryCoords.lon),
+          ],
+          routeWhileDragging: false,
+          createMarker: () => null, // Disable markers
+        }).addTo(map);
+
+        // Fit bounds to show the entire route
+        const bounds = L.latLngBounds([
+          [pickupCoords.lat, pickupCoords.lon],
+          [deliveryCoords.lat, deliveryCoords.lon],
+        ]);
+        map.fitBounds(bounds, { padding: [50, 50] });
+      }
+    } catch (error) {
+      console.error("Error calculating distance:", error);
+      alert(`Failed to calculate distance: ${error.message}`);
+    }
+  };
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    calculateDistance(); // Calculate distance before showing confirmation
+    setTimeout(() => setShowConfirmation(true), 500); // Show confirmation after a short delay
+  };
+
+  // Confirm order creation
+  const handleConfirmOrder = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        "https://sendit-backend-j83j.onrender.com/parcels",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...parcelDetails,
+            distance: distance, // Send calculated distance to backend
+          }),
+        }
+      );
+
+      const rawResponse = await response.text();
+      console.log("Raw Response:", rawResponse);
+
+      let data;
+      try {
+        data = JSON.parse(rawResponse);
+      } catch (error) {
+        throw new Error("Invalid response from server");
+      }
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create order");
+      }
+
+      // Reset the form and show success message
+      setShowConfirmation(false);
+      setParcelDetails(initialParcelDetails);
+      setDistance(""); // Clear distance
+      alert("Order created successfully!");
+    } catch (error) {
+      console.error("Error creating order:", error);
+      alert(`Failed to create order: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <div className="container">
-      <div className="layout-wrapper">
-        {/* Form Section */}
-        <div className="form-section">
-          <div className="card">
-            <div className="header">
-              <Package2 className="header-icon" />
-              <h1 className="header-title"></h1>
-              <div className="user-info">
-                <img
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt="User avatar"
-                  className="user-avatar"
-                />
-                <span className="user-name">User</span>
-              </div>
-            </div>
+    <div className="new-order-container">
+      {/* Form Section */}
+      <form onSubmit={handleSubmit}>
+        <h2>Create New Order</h2>
 
-            <form onSubmit={handleSubmit} className="form">
-              <div className="form-grid">
-                <div className="form-group">
-                  <label className="form-label">
-                    <MapPin className="form-label-icon" />
-                    Pickup Location
-                  </label>
-                  <input
-                    type="text"
-                    name="pickup_location"
-                    value={parcelDetails.pickup_location}
-                    onChange={handleInputChange}
-                    className="form-input"
-                    placeholder="Enter pickup address"
-                    required
-                  />
-                </div>
+        <label>
+          Pickup Location
+          <input
+            type="text"
+            name="pickup_location"
+            value={parcelDetails.pickup_location}
+            onChange={handleInputChange}
+            required
+          />
+        </label>
 
-                <div className="form-group">
-                  <label className="form-label">
-                    <MapPin className="form-label-icon" />
-                    Destination
-                  </label>
-                  <input
-                    type="text"
-                    name="destination"
-                    value={parcelDetails.destination}
-                    onChange={handleInputChange}
-                    className="form-input"
-                    placeholder="Enter destination address"
-                    required
-                  />
-                </div>
-              </div>
+        <label>
+          Destination
+          <input
+            type="text"
+            name="destination"
+            value={parcelDetails.destination}
+            onChange={handleInputChange}
+            required
+          />
+        </label>
 
-              <div className="form-grid">
-                <div className="form-group">
-                  <label className="form-label">
-                    <Info className="form-label-icon" />
-                    Weight (kg)
-                  </label>
-                  <input
-                    type="number"
-                    name="weight"
-                    value={parcelDetails.weight}
-                    onChange={handleInputChange}
-                    className="form-input"
-                    placeholder="Enter parcel weight"
-                    required
-                    min="0.1"
-                    step="0.1"
-                  />
-                </div>
+        <label>
+          Weight (kg)
+          <input
+            type="number"
+            name="weight"
+            value={parcelDetails.weight}
+            onChange={handleInputChange}
+            required
+          />
+        </label>
 
-                <div className="form-group">
-                  <label className="form-label">
-                    <Clock className="form-label-icon" />
-                    Delivery Speed
-                  </label>
-                  <select
-                    name="delivery_speed"
-                    value={parcelDetails.delivery_speed}
-                    onChange={handleInputChange}
-                    className="form-select"
-                    required
-                  >
-                    <option value="standard">Standard (2-3 days)</option>
-                    <option value="express">Express (1-2 days)</option>
-                    <option value="same-day">Same Day Delivery</option>
-                  </select>
-                </div>
-              </div>
+        <label>
+          Delivery Speed
+          <select
+            name="delivery_speed"
+            value={parcelDetails.delivery_speed}
+            onChange={handleInputChange}
+            required
+          >
+            <option value="standard">Standard (2-3 days)</option>
+            <option value="express">Express (1-2 days)</option>
+            <option value="same_day">Same Day Delivery</option>
+          </select>
+        </label>
 
-              <div className="form-group">
-                <label className="form-label">
-                  <Package2 className="form-label-icon" />
-                  Parcel Description
-                </label>
-                <textarea
-                  name="description"
-                  value={parcelDetails.description}
-                  onChange={handleInputChange}
-                  className="form-textarea"
-                  placeholder="Describe your parcel contents"
-                  rows={3}
-                  required
-                />
-              </div>
+        <label>
+          Parcel Description
+          <textarea
+            name="description"
+            value={parcelDetails.description}
+            onChange={handleInputChange}
+          />
+        </label>
 
-              <button type="submit" className="button button-primary button-full">
-                <Truck className="w-5 h-5" />
-                Create Order
-              </button>
-            </form>
-          </div>
-        </div>
+        <button type="submit" className="button button-primary">
+          Create Order
+        </button>
+      </form>
 
-        {/* Map Section */}
-        <div className="map-section">
-          <iframe
-            title="Map"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.835434509374!2d144.95373531531664!3d-37.816279742021665!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577d2a6e9f4b5a5!2sMelbourne%20VIC%2C%20Australia!5e0!3m2!1sen!2sus!4v1633033456789!5m2!1sen!2sus"
-            width="100%"
-            height="100%"
-            style={{ border: 0, borderRadius: '1rem' }}
-            allowFullScreen=""
-            loading="lazy"
-          ></iframe>
-        </div>
+      {/* Map Section */}
+      <div className="map-section">
+        <h3>Map Directions</h3>
+        <div id="map" style={{ height: "400px", width: "100%" }}></div>
       </div>
 
       {/* Confirmation Modal */}
       {showConfirmation && (
         <div className="modal-overlay">
           <div className="modal">
-            <div className="modal-header">
-              <CheckCircle2 className="modal-icon" />
-              <h2 className="modal-title">Confirm Your Order</h2>
-            </div>
-
-            <div className="modal-content">
-              <div className="modal-grid">
-                <div className="modal-field">
-                  <p className="modal-label">Pickup Location</p>
-                  <p className="modal-value">{parcelDetails.pickup_location}</p>
-                </div>
-                <div className="modal-field">
-                  <p className="modal-label">Destination</p>
-                  <p className="modal-value">{parcelDetails.destination}</p>
-                </div>
-                <div className="modal-field">
-                  <p className="modal-label">Weight</p>
-                  <p className="modal-value">{parcelDetails.weight} kg</p>
-                </div>
-                <div className="modal-field">
-                  <p className="modal-label">Delivery Speed</p>
-                  <p className="modal-value">{parcelDetails.delivery_speed}</p>
-                </div>
-              </div>
-              <div className="modal-field">
-                <p className="modal-label">Description</p>
-                <p className="modal-value">{parcelDetails.description}</p>
-              </div>
-            </div>
+            <h3>Confirm Your Order</h3>
+            <p>
+              <strong>Pickup Location:</strong> {parcelDetails.pickup_location}
+            </p>
+            <p>
+              <strong>Destination:</strong> {parcelDetails.destination}
+            </p>
+            <p>
+              <strong>Distance:</strong> {distance} km
+            </p>
+            <p>
+              <strong>Weight:</strong> {parcelDetails.weight} kg
+            </p>
+            <p>
+              <strong>Delivery Speed:</strong> {parcelDetails.delivery_speed}
+            </p>
+            <p>
+              <strong>Description:</strong> {parcelDetails.description}
+            </p>
 
             <div className="modal-actions">
               <button
                 onClick={handleConfirmOrder}
-                className="button button-success modal-button"
+                className="button button-primary modal-button"
                 disabled={isLoading}
               >
-                {isLoading ? 'Processing...' : 'Confirm Order'}
+                {isLoading ? "Processing..." : "Confirm Order"}
               </button>
               <button
                 onClick={() => setShowConfirmation(false)}
