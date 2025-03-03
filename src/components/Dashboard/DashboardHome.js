@@ -21,9 +21,9 @@ const DashboardHome = () => {
         }
         const data = await response.json();
         setStats([
-          { label: 'Total Customers', value: data.total_deliveries || "Loading...", icon: Users, trend: '+12.5%', color: 'blue' },
+          { label: 'Total Orders', value: data.total_deliveries || "Loading...", icon: Users, trend: '+12.5%', color: 'blue' },
           { label: 'Total Revenue', value: `$${data.delivered_orders || "Loading..."}`, icon: DollarSign, trend: '+8.2%', color: 'green' },
-          { label: 'Total Orders', value: data.pending_orders || "Loading...", icon: ShoppingBag, trend: '+3.8%', color: 'purple' },
+          { label: 'Delivered', value: data.pending_orders || "Loading...", icon: ShoppingBag, trend: '+3.8%', color: 'purple' },
           { label: 'Growth Rate', value: `${data.in_transit_orders || "Loading..."}%`, icon: TrendingUp, trend: '+2.4%', color: 'yellow' },
         ]);
       } catch (error) {
