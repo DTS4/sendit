@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; // For navigating to Cancelled Orders page
 
 const UserOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -25,8 +26,10 @@ const UserOrders = () => {
 
         // Calculate total orders, monthly orders, and total spent
         setTotalOrders(data.length);
-        setMonthlyOrders(data.filter(order => new Date(order.date).getMonth() === new Date().getMonth()).length);
-        setTotalSpent(data.reduce((total, order) => total + order.cost, 0));
+        setMonthlyOrders(
+          data.filter((order) => new Date(order.date).getMonth() === new Date().getMonth()).length
+        );
+        setTotalSpent(data.reduce((total, order) => total + (order.cost || 0), 0));
       } catch (error) {
         console.error('Error fetching orders:', error);
         setError(error.message);
@@ -37,6 +40,46 @@ const UserOrders = () => {
 
     fetchOrders();
   }, []);
+
+  // Function to handle order cancellation
+  const handleCancelOrder = async (orderId) => {
+    try {
+      const confirmCancellation = window.confirm(
+        'Are you sure you want to cancel this order? This action cannot be undone.'
+      );
+
+      if (!confirmCancellation) return;
+
+      const response = await fetch(`https://sendit-backend-j83j.onrender.com/parcels/${orderId}/cancel`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Uncomment the line below if JWT token is required later
+          // 'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({ cancel_reason: 'User requested cancellation' }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to cancel order');
+      }
+
+      const result = await response.json();
+      console.log('Order cancelled:', result);
+
+      // Refresh the orders list after successful cancellation
+      const updatedOrders = orders.map((order) =>
+        order.id === orderId ? { ...order, status: 'Cancelled' } : order
+      );
+      setOrders(updatedOrders);
+
+      // Redirect to Cancelled Orders page
+      window.location.href = '/cancelled-orders';
+    } catch (error) {
+      console.error('Error cancelling order:', error);
+      alert('Failed to cancel order. Please try again.');
+    }
+  };
 
   if (loading) return <p>Loading orders...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -89,12 +132,22 @@ const UserOrders = () => {
                 <td>{order.tracking_id}</td>
                 <td>{new Date(order.date).toLocaleDateString()}</td>
                 <td>
-                  <span className="order-status">{order.status}</span>
+                  <span className={`order-status ${order.status === 'Cancelled' ? 'cancelled' : ''}`}>
+                    {order.status}
+                  </span>
                 </td>
-                <td>${order.cost.toFixed(2)}</td>
+                <td>${order.cost?.toFixed(2) || 'N/A'}</td>
                 <td>{order.destination}</td>
                 <td>
-                  <button className="view-details">View Details</button>
+                  {order.status !== 'Cancelled' ? (
+                    <button className="cancel-order" onClick={() => handleCancelOrder(order.id)}>
+                      Cancel Order
+                    </button>
+                  ) : (
+                    <Link to="/cancelled-orders" className="view-cancelled">
+                      View Cancelled
+                    </Link>
+                  )}
                 </td>
               </tr>
             ))}

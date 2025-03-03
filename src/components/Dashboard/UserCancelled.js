@@ -12,7 +12,12 @@ const UserCancelled = () => {
   useEffect(() => {
     const fetchCancelledOrders = async () => {
       try {
-        const response = await axios.get('https://sendit-backend-j83j.onrender.com/parcels/cancelled');
+        // Replace USER_ID with the actual user ID (e.g., fetched from authentication state or local storage)
+        const userId = 1; // Example user ID; replace this with dynamic logic to get the current user's ID
+
+        const response = await axios.get(
+          `https://sendit-backend-j83j.onrender.com/parcels/cancelled?user_id=${userId}`
+        );
 
         if (response.status !== 200) {
           throw new Error('Failed to fetch cancelled orders');
