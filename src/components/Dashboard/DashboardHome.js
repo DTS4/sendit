@@ -36,7 +36,7 @@ const DashboardHome = () => {
 
   return (
     <div className="dashboard-container">
-      <h1 className="dashboard-title">Dashboard Overview</h1>
+      {/* <h1 className="dashboard-title">Dashboard Overview</h1> */}
       <div className="stats-grid">
         {stats.map((stat, index) => {
           const Icon = stat.icon;

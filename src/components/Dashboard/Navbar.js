@@ -4,12 +4,12 @@ import "../../styles/Navbar.css";
 const Navbar = () => {
   return (
     <nav className="navbar">
-      <div className="search-container">
+      {/* <div className="search-container">
         <input type="text" placeholder="Search..." className="search-input" />
         <button className="search-button">
           <Search className="search-icon" />
         </button>
-      </div>
+      </div> */}
       
       <div className="user-actions">
         <button className="notifications-button">
