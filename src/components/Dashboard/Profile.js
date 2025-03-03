@@ -62,7 +62,7 @@ const Profile = () => {
       <div className="profile-avatar-container">
         <motion.img 
           src={user.avatar} 
-          alt="Profile" 
+          // alt="Profile" 
           className="profile-avatar"
           whileHover={{ scale: 1.1 }}
         />
