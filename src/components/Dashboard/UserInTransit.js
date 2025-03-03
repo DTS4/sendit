@@ -12,11 +12,15 @@ const UserInTransit = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('https://sendit-backend-j83j.onrender.com/parcels', );
+        const response = await axios.get('https://sendit-backend-j83j.onrender.com/parcels', {
+          params: {
+            status: 'In Transit',  // Filter by status
+          },
+        });
         console.log('API response:', response.data); // Log to check data structure
 
-        // Check if response is an array or an object with a data property
-        const orders = Array.isArray(response.data) ? response.data : response.data.data || [];
+        // Ensure the response is an array
+        const orders = Array.isArray(response.data) ? response.data : [];
         console.log('Processed orders:', orders);
 
         if (orders.length > 0) {
@@ -54,7 +58,7 @@ const UserInTransit = () => {
               <div className="order-header">
                 <div className="order-info">
                   <Truck className="icon" />
-                  <span className="order-number">{order.orderNumber || 'N/A'}</span>
+                  <span className="order-number">{order.tracking_id || 'N/A'}</span>
                 </div>
                 <span className="status-badge">{order.status || 'Unknown'}</span>
               </div>
@@ -64,18 +68,18 @@ const UserInTransit = () => {
                   <MapPin className="icon-small" />
                   <div>
                     <p className="label">Current Location</p>
-                    <p className="value">{order.currentLocation || 'N/A'}</p>
+                    <p className="value">{order.current_location || 'N/A'}</p>
                   </div>
                 </div>
 
                 <div>
                   <p className="label">Tracking Number</p>
-                  <p className="value">{order.trackingNumber || 'N/A'}</p>
+                  <p className="value">{order.tracking_id || 'N/A'}</p>
                 </div>
 
                 <div>
                   <p className="label">Estimated Delivery</p>
-                  <p className="value">{order.estimatedDelivery || 'N/A'}</p>
+                  <p className="value">{order.estimated_delivery || 'N/A'}</p>
                 </div>
               </div>
 

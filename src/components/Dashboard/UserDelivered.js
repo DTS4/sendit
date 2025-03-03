@@ -7,14 +7,20 @@ const UserDelivered = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch delivered orders from backend
+  // Fetch delivered orders from the same backend as UserOrders
   useEffect(() => {
     const fetchDeliveredOrders = async () => {
       try {
-        const response = await axios.get('https://sendit-backend-j83j.onrender.com');  // Replace with your backend URL
-        console.log(response.data);  // Debugging line
-        setDeliveredOrders(Array.isArray(response.data) ? response.data : []);
+        const response = await axios.get('https://sendit-backend-j83j.onrender.com/parcels');
+        const allOrders = response.data;
+
+        // Filter only delivered orders
+        const filteredOrders = allOrders.filter(order => order.status === 'Delivered');
+        console.log('Delivered orders:', filteredOrders);  // Debugging line
+
+        setDeliveredOrders(filteredOrders);
       } catch (err) {
+        console.error('Error fetching delivered orders:', err);
         setError('Failed to fetch delivered orders');
       } finally {
         setLoading(false);
@@ -32,6 +38,10 @@ const UserDelivered = () => {
     return <div className="error">{error}</div>;
   }
 
+  if (deliveredOrders.length === 0) {
+    return <div className="no-orders">No delivered orders found.</div>;
+  }
+
   return (
     <div className="delivered-container">
       <h2 className="delivered-title">Delivered Orders</h2>
@@ -42,39 +52,45 @@ const UserDelivered = () => {
             <div className="delivered-header">
               <div className="order-info">
                 <CheckCircle className="icon-green" />
-                <span className="order-number">{order.orderNumber}</span>
+                <span className="order-number">{order.tracking_id || 'N/A'}</span>
               </div>
-              <span className="delivery-date">Delivered on {order.deliveryDate}</span>
+              <span className="delivery-date">
+                Delivered on {new Date(order.date).toLocaleDateString() || 'N/A'}
+              </span>
             </div>
             
             <div className="delivered-details">
               <div>
                 <p className="detail-label">Delivery Address</p>
-                <p className="detail-value">{order.deliveryAddress}</p>
+                <p className="detail-value">{order.destination || 'N/A'}</p>
               </div>
               
               <div className="items-section">
                 <h4 className="items-title">Items</h4>
-                {order.items.map((item, index) => (
-                  <div key={index} className="item-row">
-                    <div className="item-info">
-                      <span className="item-name">{item.name}</span>
-                      <span className="item-quantity">x{item.quantity}</span>
+                {order.items && order.items.length > 0 ? (
+                  order.items.map((item, index) => (
+                    <div key={index} className="item-row">
+                      <div className="item-info">
+                        <span className="item-name">{item.name}</span>
+                        <span className="item-quantity">x{item.quantity}</span>
+                      </div>
+                      {!item.reviewed ? (
+                        <button className="review-button">
+                          <Star className="icon-yellow" />
+                          Review
+                        </button>
+                      ) : (
+                        <span className="reviewed-text">Reviewed</span>
+                      )}
                     </div>
-                    {!item.reviewed ? (
-                      <button className="review-button">
-                        <Star className="icon-yellow" />
-                        Review
-                      </button>
-                    ) : (
-                      <span className="reviewed-text">Reviewed</span>
-                    )}
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <p>No items available.</p>
+                )}
               </div>
               
               <div className="total-section">
-                <span className="total-amount">Total: ${order.total}</span>
+                <span className="total-amount">Total: ${order.cost.toFixed(2) || 'N/A'}</span>
                 <button className="view-details-button">View Details</button>
               </div>
             </div>

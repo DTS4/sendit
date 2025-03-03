@@ -83,7 +83,7 @@ export default function App() {
                   alt="User avatar"
                   className="user-avatar"
                 />
-                <span className="user-name">Bobb</span>
+                <span className="user-name">User</span>
               </div>
             </div>
 
