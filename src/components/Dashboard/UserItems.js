@@ -12,8 +12,12 @@ const UserItems = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        // Replace this URL with your backend endpoint
-        const response = await axios.get('https://sendit-backend-j83j.onrender.com');
+        const response = await axios.get('https://sendit-backend-j83j.onrender.com/user/items', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+
         setItems(Array.isArray(response.data) ? response.data : []);
       } catch (err) {
         console.error('Error fetching items:', err);
@@ -41,7 +45,7 @@ const UserItems = () => {
       <div className="items-grid">
         {items.map((item) => (
           <div key={item.id} className="item-card">
-            <img src={item.image} alt={item.name} className="item-image" />
+            <img src={item.image_url} alt={item.name} className="item-image" />
             <div className="item-details">
               <h3 className="item-name">{item.name}</h3>
               <div className="rating">
@@ -49,7 +53,7 @@ const UserItems = () => {
                 <span className="rating-value">{item.rating}</span>
               </div>
               <p className="price">${item.price}</p>
-              <p className="purchase-date">Purchased on {item.purchaseDate}</p>
+              <p className="purchase-date">Purchased on {new Date(item.purchase_date).toLocaleDateString()}</p>
               <div className="buttons">
                 <button className="buy-again">Buy Again</button>
                 <button className="review">Review</button>

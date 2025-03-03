@@ -12,14 +12,8 @@ const UserOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('https://sendit-backend-j83j.onrender.com/orders', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
+        const response = await fetch('https://sendit-backend-j83j.onrender.com/parcels');
 
-        console.log('Token:', localStorage.getItem('token'));
-        
         if (!response.ok) {
           throw new Error('Failed to fetch orders');
         }
@@ -32,7 +26,7 @@ const UserOrders = () => {
         // Calculate total orders, monthly orders, and total spent
         setTotalOrders(data.length);
         setMonthlyOrders(data.filter(order => new Date(order.date).getMonth() === new Date().getMonth()).length);
-        setTotalSpent(data.reduce((total, order) => total + order.amount, 0));
+        setTotalSpent(data.reduce((total, order) => total + order.cost, 0));
       } catch (error) {
         console.error('Error fetching orders:', error);
         setError(error.message);
@@ -85,20 +79,20 @@ const UserOrders = () => {
               <th>Date</th>
               <th>Status</th>
               <th>Amount</th>
-              <th>Items</th>
+              <th>Destination</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {orders.map((order) => (
               <tr key={order.id}>
-                <td>{order.orderNumber}</td>
+                <td>{order.tracking_id}</td>
                 <td>{new Date(order.date).toLocaleDateString()}</td>
                 <td>
                   <span className="order-status">{order.status}</span>
                 </td>
-                <td>${order.amount.toFixed(2)}</td>
-                <td>{order.items.length}</td>
+                <td>${order.cost.toFixed(2)}</td>
+                <td>{order.destination}</td>
                 <td>
                   <button className="view-details">View Details</button>
                 </td>

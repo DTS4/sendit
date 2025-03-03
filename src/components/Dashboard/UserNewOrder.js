@@ -5,6 +5,7 @@ import '../../styles/UserNewOrder.css';
 const initialParcelDetails = {
   pickup_location: '',
   destination: '',
+  distance: '',  // New field for distance
   weight: '',
   description: '',
   delivery_speed: 'standard',
@@ -125,6 +126,24 @@ export default function App() {
                 <div className="form-group">
                   <label className="form-label">
                     <Info className="form-label-icon" />
+                    Distance (km)
+                  </label>
+                  <input
+                    type="number"
+                    name="distance"
+                    value={parcelDetails.distance}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    placeholder="Enter distance in kilometers"
+                    required
+                    min="0.1"
+                    step="0.1"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">
+                    <Info className="form-label-icon" />
                     Weight (kg)
                   </label>
                   <input
@@ -215,6 +234,10 @@ export default function App() {
                 <div className="modal-field">
                   <p className="modal-label">Destination</p>
                   <p className="modal-value">{parcelDetails.destination}</p>
+                </div>
+                <div className="modal-field">
+                  <p className="modal-label">Distance</p>
+                  <p className="modal-value">{parcelDetails.distance} km</p>
                 </div>
                 <div className="modal-field">
                   <p className="modal-label">Weight</p>
