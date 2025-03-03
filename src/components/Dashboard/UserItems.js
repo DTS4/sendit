@@ -12,7 +12,7 @@ const UserItems = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await axios.get('https://sendit-backend-j83j.onrender.com/user/items', {
+        const response = await axios.get('https://sendit-backend-j83j.onrender.com/user/parcels', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
