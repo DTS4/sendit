@@ -175,9 +175,11 @@ export default function App() {
   return (
     <div className="new-order-container">
       {/* Form Section */}
-      <form onSubmit={handleSubmit}>
-        <h2>Create New Order</h2>
-
+      <div className="form-card">
+  <form onSubmit={handleSubmit}>
+    <h2>Create New Order</h2>
+    <div className="form-grid">
+      <div className="form-group">
         <label>
           Pickup Location
           <input
@@ -185,10 +187,13 @@ export default function App() {
             name="pickup_location"
             value={parcelDetails.pickup_location}
             onChange={handleInputChange}
+            placeholder="Enter pickup location"
             required
           />
         </label>
+      </div>
 
+      <div className="form-group">
         <label>
           Destination
           <input
@@ -196,10 +201,13 @@ export default function App() {
             name="destination"
             value={parcelDetails.destination}
             onChange={handleInputChange}
+            placeholder="Enter destination"
             required
           />
         </label>
+      </div>
 
+      <div className="form-group">
         <label>
           Weight (kg)
           <input
@@ -207,10 +215,13 @@ export default function App() {
             name="weight"
             value={parcelDetails.weight}
             onChange={handleInputChange}
+            placeholder="Enter weight"
             required
           />
         </label>
+      </div>
 
+      <div className="form-group">
         <label>
           Delivery Speed
           <select
@@ -224,25 +235,30 @@ export default function App() {
             <option value="same_day">Same Day Delivery</option>
           </select>
         </label>
+      </div>
 
+      <div className="form-group full-width">
         <label>
           Parcel Description
           <textarea
             name="description"
             value={parcelDetails.description}
             onChange={handleInputChange}
+            placeholder="Enter parcel description"
           />
         </label>
+      </div>
+    </div>
 
-        <button type="submit" className="button button-primary">
-          Create Order
-        </button>
-      </form>
-
+    <button type="submit" className="button button-primary">
+      Create Order
+    </button>
+  </form>
+</div>
       {/* Map Section */}
       <div className="map-section">
-        <h3>Map Directions</h3>
-        <div id="map" style={{ height: "400px", width: "100%" }}></div>
+        {/* <h3>Map Directions</h3> */}
+        <div id="map" style={{ height: "620px", width: "60%", left: "400px", bottom: "200px"}}></div>
       </div>
 
       {/* Confirmation Modal */}
