@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
+
 const UserOrders = () => {
   const [orders, setOrders] = useState([]);
   const [totalOrders, setTotalOrders] = useState(0);
@@ -183,9 +184,7 @@ const UserOrders = () => {
                     </>
                   )}
                   {order.status === 'Cancelled' && (
-                    <Link to="/cancelled-orders" className="view-cancelled">
-                      View Cancelled
-                    </Link>
+            <button onClick={handleCloseModal}></button>
                   )}
                 </td>
               </tr>

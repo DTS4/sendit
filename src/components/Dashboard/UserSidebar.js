@@ -14,7 +14,7 @@ import {
 const UserSidebar = ({ activeSection, setActiveSection }) => {
   const menuItems = [
     { id: 'orders', label: 'All Orders', icon: Package },
-    { id: 'items', label: 'My Items', icon: ShoppingBag },
+    // { id: 'items', label: 'My Items', icon: ShoppingBag },
     { id: 'new-order', label: 'New Order', icon: PlusCircle },
     // { id: 'received', label: 'Received', icon: CheckCircle },
     { id: 'cancelled', label: 'Cancelled', icon: XCircle },
