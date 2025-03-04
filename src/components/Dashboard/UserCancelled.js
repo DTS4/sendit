@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { XCircle } from 'lucide-react';
 import axios from 'axios';
-import '../../styles/UserCancelled.css'; // Import the CSS file
+import '../../styles/UserCancelled.css';
 
 const UserCancelled = () => {
   const [cancelledOrders, setCancelledOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null); // For viewing order details
 
   // Fetch cancelled orders from backend
   useEffect(() => {
     const fetchCancelledOrders = async () => {
       try {
-        // Replace USER_ID with the actual user ID (e.g., fetched from authentication state or local storage)
-        const userId = 1; // Example user ID; replace this with dynamic logic to get the current user's ID
+        // Get user ID from local storage or auth state
+        const userId = localStorage.getItem('userId');
+        if (!userId) throw new Error('User not authenticated');
 
         const response = await axios.get(
           `https://sendit-backend-j83j.onrender.com/parcels/cancelled?user_id=${userId}`
@@ -27,7 +29,7 @@ const UserCancelled = () => {
         setCancelledOrders(data);
       } catch (err) {
         console.error('Error fetching cancelled orders:', err);
-        setError(err.message || 'Failed to fetch cancelled orders. Please try again later.');
+        setError(err.response?.data?.message || err.message || 'Failed to fetch cancelled orders. Please try again.');
       } finally {
         setLoading(false);
       }
@@ -36,12 +38,20 @@ const UserCancelled = () => {
     fetchCancelledOrders();
   }, []);
 
+  const handleViewDetails = (order) => {
+    setSelectedOrder(order);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedOrder(null);
+  };
+
   if (loading) {
-    return <div className="loading">Loading cancelled orders...</div>;
+    return <div className="loading-spinner">Loading cancelled orders...</div>;
   }
 
   if (error) {
-    return <div className="error">{error}</div>;
+    return <div className="error-message">{error}</div>;
   }
 
   return (
@@ -77,19 +87,36 @@ const UserCancelled = () => {
 
                 <div className="detail-row">
                   <span className="label">Amount:</span>
-                  <span className="value">${order.cost || 'N/A'}</span>
+                  <span className="value">${order.cost?.toFixed(2) || 'N/A'}</span>
                 </div>
               </div>
 
               <div className="actions">
-                <button className="view-details">View Details</button>
+                <button className="view-details" onClick={() => handleViewDetails(order)}>
+                  View Details
+                </button>
               </div>
             </div>
           ))
         ) : (
-          <p>No cancelled orders found.</p>
+          <p className="no-orders">No cancelled orders found.</p>
         )}
       </div>
+
+      {selectedOrder && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Order Details</h3>
+            <p><strong>Tracking ID:</strong> {selectedOrder.tracking_id}</p>
+            <p><strong>Cancel Date:</strong> {new Date(selectedOrder.cancel_date).toLocaleString() || 'N/A'}</p>
+            <p><strong>Reason:</strong> {selectedOrder.cancel_reason || 'N/A'}</p>
+            <p><strong>Refund Status:</strong> {selectedOrder.refund_status || 'N/A'}</p>
+            <p><strong>Amount:</strong> ${selectedOrder.cost?.toFixed(2) || 'N/A'}</p>
+            <p><strong>Destination:</strong> {selectedOrder.destination || 'N/A'}</p>
+            <button className="close-modal" onClick={handleCloseModal}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
