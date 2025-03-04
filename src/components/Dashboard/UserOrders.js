@@ -1,6 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-
 
 const UserOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -25,12 +23,18 @@ const UserOrders = () => {
         const data = await response.json();
         console.log('Fetched orders:', data);
 
-        setOrders(data);
-        setTotalOrders(data.length);
+        // Ensure all dates are valid
+        const validatedOrders = data.map((order) => ({
+          ...order,
+          date: order.date ? new Date(order.date).toISOString() : new Date().toISOString(), // Fallback to current date if invalid
+        }));
+
+        setOrders(validatedOrders);
+        setTotalOrders(validatedOrders.length);
         setMonthlyOrders(
-          data.filter((order) => new Date(order.date).getMonth() === new Date().getMonth()).length
+          validatedOrders.filter((order) => new Date(order.date).getMonth() === new Date().getMonth()).length
         );
-        setTotalSpent(data.reduce((total, order) => total + (order.cost || 0), 0));
+        setTotalSpent(validatedOrders.reduce((total, order) => total + (order.cost || 0), 0));
       } catch (error) {
         console.error('Error fetching orders:', error);
         setError(error.message);
@@ -73,7 +77,7 @@ const UserOrders = () => {
     }
   }, []);
 
-  // Function to handle order update
+  // Function to handle order update (destination only)
   const handleUpdateOrder = useCallback(async () => {
     if (!selectedOrder || !updatedDestination.trim()) {
       alert('Please provide a valid destination.');
@@ -86,10 +90,12 @@ const UserOrders = () => {
     }
 
     try {
+      const updateData = { destination: updatedDestination };
+
       const response = await fetch(`${API_BASE_URL}/${selectedOrder.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ destination: updatedDestination }),
+        body: JSON.stringify(updateData),
       });
 
       if (!response.ok) {
@@ -136,14 +142,6 @@ const UserOrders = () => {
         </div>
 
         <div className="summary-card">
-          <div className="summary-icon summary-green">📅</div>
-          <div className="summary-info">
-            <h3>This Month</h3>
-            <p>{monthlyOrders}</p>
-          </div>
-        </div>
-
-        <div className="summary-card">
           <div className="summary-icon summary-purple">💰</div>
           <div className="summary-info">
             <h3>Total Spent</h3>
@@ -168,7 +166,7 @@ const UserOrders = () => {
             {orders.map((order) => (
               <tr key={order.id}>
                 <td>{order.tracking_id}</td>
-                <td>{new Date(order.date).toLocaleDateString()}</td>
+                <td>{order.date ? new Date(order.date).toLocaleDateString() : 'N/A'}</td>
                 <td className={`order-status ${order.status.toLowerCase()}`}>{order.status}</td>
                 <td>${order.cost?.toFixed(2) || 'N/A'}</td>
                 <td>{order.destination}</td>
@@ -183,9 +181,6 @@ const UserOrders = () => {
                       </button>
                     </>
                   )}
-                  {order.status === 'Cancelled' && (
-            <button onClick={handleCloseModal}></button>
-                  )}
                 </td>
               </tr>
             ))}
@@ -196,7 +191,7 @@ const UserOrders = () => {
       {selectedOrder && (
         <div className="modal">
           <div className="modal-content">
-            <h3>Update Order Destination</h3>
+            <h3>Update Order</h3>
             <input
               type="text"
               value={updatedDestination}

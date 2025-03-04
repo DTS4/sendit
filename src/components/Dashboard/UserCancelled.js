@@ -1,57 +1,68 @@
 import React, { useEffect, useState } from 'react';
 import { XCircle } from 'lucide-react';
 import axios from 'axios';
-import '../../styles/UserCancelled.css';
+import '../../styles/UserCancelled.css'; // Import the CSS file
 
 const UserCancelled = () => {
   const [cancelledOrders, setCancelledOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedOrder, setSelectedOrder] = useState(null); // For viewing order details
+  const [selectedOrder, setSelectedOrder] = useState(null); // State to track the selected order for details
 
-  // Fetch cancelled orders from backend
+  // Fetch all orders from backend
   useEffect(() => {
-    const fetchCancelledOrders = async () => {
+    const fetchAllOrders = async () => {
       try {
-        // Get user ID from local storage or auth state
-        const userId = localStorage.getItem('userId');
-        if (!userId) throw new Error('User not authenticated');
+        // Replace USER_ID with the actual user ID (e.g., fetched from authentication state or local storage)
+        const userId = 1; // Example user ID; replace this with dynamic logic to get the current user's ID
 
         const response = await axios.get(
-          `https://sendit-backend-j83j.onrender.com/parcels/cancelled?user_id=${userId}`
+          `https://sendit-backend-j83j.onrender.com/parcels?user_id=${userId}`
         );
 
         if (response.status !== 200) {
-          throw new Error('Failed to fetch cancelled orders');
+          throw new Error('Failed to fetch orders');
         }
 
-        const data = Array.isArray(response.data) ? response.data : [];
-        setCancelledOrders(data);
+        const allOrders = Array.isArray(response.data) ? response.data : [];
+
+        // Filter cancelled orders
+        const cancelled = allOrders.filter((order) => order.status === 'Cancelled');
+
+        // Map cancelled orders to include the original order date
+        const cancelledWithDate = cancelled.map((order) => ({
+          ...order,
+          cancel_date: order.date, // Use the original order date as the cancellation date
+        }));
+
+        setCancelledOrders(cancelledWithDate);
       } catch (err) {
-        console.error('Error fetching cancelled orders:', err);
-        setError(err.response?.data?.message || err.message || 'Failed to fetch cancelled orders. Please try again.');
+        console.error('Error fetching orders:', err);
+        setError(err.message || 'Failed to fetch orders. Please try again later.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCancelledOrders();
+    fetchAllOrders();
   }, []);
 
+  // Function to handle opening the details modal
   const handleViewDetails = (order) => {
     setSelectedOrder(order);
   };
 
+  // Function to handle closing the details modal
   const handleCloseModal = () => {
     setSelectedOrder(null);
   };
 
   if (loading) {
-    return <div className="loading-spinner">Loading cancelled orders...</div>;
+    return <div className="loading">Loading cancelled orders...</div>;
   }
 
   if (error) {
-    return <div className="error-message">{error}</div>;
+    return <div className="error">{error}</div>;
   }
 
   return (
@@ -87,7 +98,7 @@ const UserCancelled = () => {
 
                 <div className="detail-row">
                   <span className="label">Amount:</span>
-                  <span className="value">${order.cost?.toFixed(2) || 'N/A'}</span>
+                  <span className="value">${order.cost || 'N/A'}</span>
                 </div>
               </div>
 
@@ -99,21 +110,52 @@ const UserCancelled = () => {
             </div>
           ))
         ) : (
-          <p className="no-orders">No cancelled orders found.</p>
+          <p>No cancelled orders found.</p>
         )}
       </div>
 
+      {/* Modal for displaying order details */}
       {selectedOrder && (
-        <div className="modal">
+        <div className="modal-overlay">
           <div className="modal-content">
             <h3>Order Details</h3>
-            <p><strong>Tracking ID:</strong> {selectedOrder.tracking_id}</p>
-            <p><strong>Cancel Date:</strong> {new Date(selectedOrder.cancel_date).toLocaleString() || 'N/A'}</p>
-            <p><strong>Reason:</strong> {selectedOrder.cancel_reason || 'N/A'}</p>
-            <p><strong>Refund Status:</strong> {selectedOrder.refund_status || 'N/A'}</p>
-            <p><strong>Amount:</strong> ${selectedOrder.cost?.toFixed(2) || 'N/A'}</p>
-            <p><strong>Destination:</strong> {selectedOrder.destination || 'N/A'}</p>
-            <button className="close-modal" onClick={handleCloseModal}>Close</button>
+            <div className="modal-details">
+              <div className="detail-row">
+                <span className="label">Order ID:</span>
+                <span className="value">{selectedOrder.tracking_id || 'N/A'}</span>
+              </div>
+              <div className="detail-row">
+                <span className="label">Date:</span>
+                <span className="value">
+                  {new Date(selectedOrder.cancel_date).toLocaleDateString() || 'N/A'}
+                </span>
+              </div>
+              <div className="detail-row">
+                <span className="label">Reason:</span>
+                <span className="value">{selectedOrder.cancel_reason || 'N/A'}</span>
+              </div>
+              <div className="detail-row">
+                <span className="label">Refund Status:</span>
+                <span className={`value ${selectedOrder.refund_status === 'Processed' ? 'processed' : 'pending'}`}>
+                  {selectedOrder.refund_status || 'N/A'}
+                </span>
+              </div>
+              <div className="detail-row">
+                <span className="label">Amount:</span>
+                <span className="value">${selectedOrder.cost || 'N/A'}</span>
+              </div>
+              <div className="detail-row">
+                <span className="label">Destination:</span>
+                <span className="value">{selectedOrder.destination || 'N/A'}</span>
+              </div>
+              <div className="detail-row">
+                <span className="label">Status:</span>
+                <span className="value">{selectedOrder.status || 'N/A'}</span>
+              </div>
+            </div>
+            <button className="close-modal" onClick={handleCloseModal}>
+              Close
+            </button>
           </div>
         </div>
       )}

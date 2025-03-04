@@ -33,7 +33,8 @@ export default function App() {
   // Initialize the map only once when the component mounts
   useEffect(() => {
     if (!mapRef.current) {
-      const osmMap = L.map("map").setView([0, 0], 2); // Default center
+      const osmMap = L.map("map", { zoomControl: false }).setView([0, 0], 2);
+      ; // Default center
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
         attribution:
