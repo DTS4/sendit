@@ -23,11 +23,13 @@ const UserSidebar = ({ activeSection, setActiveSection }) => {
   ];
 
   return (
-    <div className="sidebar-container">
-      <div className="sidebar-header">
-        <h1 className="sidebar-title">User Dashboard</h1>
-      </div>
-      <nav className="sidebar-menu">
+<div className="sidebar-container">
+  <div className="sidebar-header">
+    <h1 className="sidebar-title">
+      Sen<span className="cool-dit">dit</span>
+    </h1>
+  </div>
+  <nav className="sidebar-menu">
         {menuItems.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
