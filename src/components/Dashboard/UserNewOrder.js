@@ -266,8 +266,8 @@ export default function App() {
       {showConfirmation && (
         <div className="modal-overlay">
           <div className="modal">
-            <h3>Confirm Your Order</h3>
-            <p>
+            {/* <h3>Confirm Your Order</h3> */}
+            {/* <p>
               <strong>Pickup Location:</strong> {parcelDetails.pickup_location}
             </p>
             <p>
@@ -275,16 +275,16 @@ export default function App() {
             </p>
             <p>
               <strong>Distance:</strong> {distance} km
-            </p>
-            <p>
+            </p> */}
+            {/* <p>
               <strong>Weight:</strong> {parcelDetails.weight} kg
             </p>
             <p>
               <strong>Delivery Speed:</strong> {parcelDetails.delivery_speed}
-            </p>
-            <p>
+            </p> */}
+            {/* <p>
               <strong>Description:</strong> {parcelDetails.description}
-            </p>
+            </p> */}
 
             <div className="modal-actions">
               <button

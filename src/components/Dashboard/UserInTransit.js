@@ -128,7 +128,7 @@ const UserInTransit = () => {
         <div className="modal-overlay">
           <div className="modal">
             <div className="modal-header">
-              <h2>Order Details</h2>
+              <h2></h2>
               <button className="close-button" onClick={handleCloseDetails}>
                 <X className="icon" />
               </button>

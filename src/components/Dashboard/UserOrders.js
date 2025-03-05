@@ -78,49 +78,55 @@ const UserOrders = () => {
   }, []);
 
   // Function to handle order update (destination only)
-  const handleUpdateOrder = useCallback(async () => {
-    if (!selectedOrder || !updatedDestination.trim()) {
-      alert('Please provide a valid destination.');
-      return;
+const handleUpdateOrder = useCallback(async () => {
+  if (!selectedOrder || !updatedDestination.trim()) {
+    alert('Please provide a valid destination.');
+    return;
+  }
+
+  if (updatedDestination.length < 3 || updatedDestination.length > 100) {
+    alert('Destination must be between 3 and 100 characters.');
+    return;
+  }
+
+  // Validate that the destination is specific enough
+  if (updatedDestination.split(',').length < 2) {
+    alert('Please provide a more specific address (e.g., "City, Country").');
+    return;
+  }
+
+  try {
+    const updateData = { destination: updatedDestination };
+
+    console.log("Sending update request:", updateData); // Debugging
+
+    const response = await fetch(`${API_BASE_URL}/${selectedOrder.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updateData),
+    });
+
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      console.error('Server response:', response.status, errorMessage);
+      throw new Error(`Failed to update order: ${errorMessage}`);
     }
 
-    if (updatedDestination.length < 3 || updatedDestination.length > 100) {
-      alert('Destination must be between 3 and 100 characters.');
-      return;
-    }
+    const result = await response.json();
+    console.log('Order updated:', result);
 
-    try {
-      const updateData = { destination: updatedDestination };
-
-      console.log("Sending update request:", updateData); // Debugging
-
-      const response = await fetch(`${API_BASE_URL}/${selectedOrder.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updateData),
-      });
-
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        console.error('Server response:', response.status, errorMessage);
-        throw new Error(`Failed to update order: ${errorMessage}`);
-      }
-
-      const result = await response.json();
-      console.log('Order updated:', result);
-
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order.id === selectedOrder.id ? { ...order, destination: updatedDestination } : order
-        )
-      );
-      handleCloseModal();
-      alert('Order updated successfully!');
-    } catch (error) {
-      console.error('Error updating order:', error);
-      alert(`Failed to update order. ${error.message}`);
-    }
-  }, [selectedOrder, updatedDestination]);
+    setOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        order.id === selectedOrder.id ? { ...order, destination: updatedDestination } : order
+      )
+    );
+    handleCloseModal();
+    alert('Order updated successfully!');
+  } catch (error) {
+    console.error('Error updating order:', error);
+    alert(`Failed to update order. ${error.message}`);
+  }
+}, [selectedOrder, updatedDestination]);
 
   const handleCloseModal = () => {
     setSelectedOrder(null);
