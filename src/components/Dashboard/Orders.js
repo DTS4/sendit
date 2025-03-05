@@ -147,7 +147,7 @@ const Orders = () => {
                       className="admin-hide-button"
                       onClick={() => handleHideOrder(order.id)}
                     >
-                      Hide
+                     Delete
                     </button>
                   )}
                 </td>
