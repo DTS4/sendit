@@ -92,6 +92,8 @@ const UserOrders = () => {
     try {
       const updateData = { destination: updatedDestination };
 
+      console.log("Sending update request:", updateData); // Debugging
+
       const response = await fetch(`${API_BASE_URL}/${selectedOrder.id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
