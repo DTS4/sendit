@@ -39,17 +39,16 @@ const Orders = () => {
       );
       if (!confirmUpdate) return;
   
-      console.log("Sending update request:", { parcelId, newStatus });
+      // Normalize the status value
+      const normalizedStatus = newStatus
+        .replace(" ", "") // Remove spaces
+        .toLowerCase(); // Convert to lowercase
+  
+      console.log("Sending update request:", { parcelId, status: normalizedStatus });
   
       const response = await axios.post(
         `https://sendit-backend-j83j.onrender.com/parcels/${parcelId}/update_status`,
-        { status: newStatus },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            // Add any required headers (e.g., authorization token)
-          },
-        }
+        { status: normalizedStatus }
       );
   
       console.log("Response from server:", response.data);
@@ -66,15 +65,14 @@ const Orders = () => {
       }
     } catch (error) {
       let errorMessage = error.message;
-      if (error.response && error.response.data && error.response.data.message) {
-        errorMessage = error.response.data.message;
+      if (error.response && error.response.data) {
+        console.error("Full error response:", error.response.data); // Debugging
+        errorMessage = error.response.data.message || error.response.data.error || error.message;
       }
       console.error("Error updating status:", errorMessage);
-      console.error("Error details:", error.response?.data); // Log detailed error response
       alert(`Failed to update status: ${errorMessage}`);
     }
   };
-
 
   // Function to handle hiding the order (removing it from the UI)
   const handleHideOrder = (parcelId) => {
@@ -130,7 +128,7 @@ const Orders = () => {
                   {/* Update Status Buttons */}
                   <button
                     className="admin-status-button"
-                    onClick={() => handleStatusUpdate(order.id, "In Transit")}
+                    onClick={() => handleStatusUpdate(order.id, "In_Transit")}
                     disabled={order.status !== "Pending"} // Only enable if status is "Pending"
                   >
                     In Transit
@@ -167,7 +165,7 @@ const getStatusClass = (status) => {
   switch (status) {
     case "Pending":
       return "status-pending";
-    case "In Transit":
+    case "In_Transit":
       return "status-in-transit";
     case "Delivered":
       return "status-delivered";

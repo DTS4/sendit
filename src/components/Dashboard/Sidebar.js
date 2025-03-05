@@ -16,12 +16,12 @@ const Sidebar = () => {
               <span className="nav-text">Home</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/dashboard/profile" className="nav-item">
               <User className="nav-icon" />
               <span className="nav-text">Profile</span>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/dashboard/settings" className="nav-item">
               <Settings className="nav-icon" />

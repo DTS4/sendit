@@ -1,21 +1,24 @@
 .orders-container {
   padding: 24px;
   animation: fadeIn 0.5s ease-out;
-  width: 800px;
-  justify-self: center;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .orders-title {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 28px;
+  font-weight: 700;
+  color: #2d3748;
   margin-bottom: 24px;
+  text-align: center;
 }
 
 .orders-card {
   background: white;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .orders-table {
@@ -23,40 +26,108 @@
   border-collapse: collapse;
 }
 
-.orders-table th, .orders-table td {
-  padding: 12px;
+.orders-table th,
+.orders-table td {
+  padding: 16px;
   text-align: left;
   border-bottom: 1px solid #e2e8f0;
 }
 
+.orders-table th {
+  background-color: #f7fafc;
+  font-weight: 600;
+  color: #4a5568;
+}
+
 .order-row:hover {
   background-color: #f8fafc;
+  transition: background-color 0.2s ease;
 }
 
 .status-badge {
-  padding: 4px 12px;
-  border-radius: 16px;
+  padding: 6px 12px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
   display: inline-block;
-}
-
-.status-shipped {
-  background-color: #dcfce7;
-  color: #16a34a;
-}
-
-.status-processing {
-  background-color: #fef9c3;
-  color: #ca8a04;
-}
-
-.status-delivered {
-  background-color: #dbeafe;
-  color: #1d4ed8;
+  text-transform: capitalize;
 }
 
 .status-pending {
   background-color: #f1f5f9;
   color: #64748b;
+}
+
+.status-in-transit {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-delivered {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.status-cancelled {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.admin-status-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.admin-status-button:disabled {
+  background-color: #e2e8f0;
+  color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.admin-status-button:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+.admin-status-button.in-transit {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.admin-status-button.delivered {
+  background-color: #10b981;
+  color: white;
+}
+
+.admin-hide-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #ef4444;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.admin-hide-button:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
