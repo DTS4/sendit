@@ -39,6 +39,22 @@
   color: #4a5568;
 }
 
+/* Align specific columns to the left */
+.orders-table th:nth-child(4), /* Pickup Location */
+.orders-table td:nth-child(4), /* Pickup Location */
+.orders-table th:nth-child(5), /* Destination */
+.orders-table td:nth-child(5), /* Destination */
+.orders-table th:nth-child(6), /* Distance (km) */
+.orders-table td:nth-child(6), /* Distance (km) */
+.orders-table th:nth-child(7), /* Weight (kg) */
+.orders-table td:nth-child(7), /* Weight (kg) */
+.orders-table th:nth-child(8), /* Status */
+.orders-table td:nth-child(8), /* Status */
+.orders-table th:nth-child(9), /* Actions */
+.orders-table td:nth-child(9) { /* Actions */
+  text-align: left;
+}
+
 .order-row:hover {
   background-color: #f8fafc;
   transition: background-color 0.2s ease;
