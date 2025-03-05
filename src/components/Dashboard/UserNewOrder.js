@@ -259,7 +259,7 @@ export default function App() {
       {/* Map Section */}
       <div className="map-section">
         {/* <h3>Map Directions</h3> */}
-        <div id="map" style={{ height: "620px", width: "60%", left: "400px", bottom: "200px"}}></div>
+        <div id="map" style={{ height: "1000px", width: "60%", left: "400px", bottom: "200px"}}></div>
       </div>
 
       {/* Confirmation Modal */}
