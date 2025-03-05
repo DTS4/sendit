@@ -68,22 +68,22 @@ const Analytics = () => {
         <AnalyticsCard
           title="Total Deliveries"
           value={analyticsData.total_deliveries || "N/A"}
-          color="text-blue"
+          color="#2563EB"
         />
         <AnalyticsCard
           title="Pending Orders"
           value={analyticsData.pending_orders || "N/A"}
-          color="text-green"
+          color="#16A34A"
         />
         <AnalyticsCard
           title="In Transit Orders"
           value={analyticsData.in_transit_orders || "N/A"}
-          color="text-yellow"
+          color="#F59E0B"
         />
         <AnalyticsCard
           title="Delivered Orders"
           value={analyticsData.delivered_orders || "N/A"}
-          color="text-red"
+          color="#EF4444"
         />
       </div>
 
@@ -113,9 +113,14 @@ const Analytics = () => {
 
 // Analytics Card Component
 const AnalyticsCard = ({ title, value, color }) => (
-  <div className="analytics-card">
+  <div
+    className="analytics-card"
+    style={{ borderBottom: `4px solid ${color}` }}
+  >
     <h2 className="analytics-card-title">{title}</h2>
-    <p className={`analytics-stat ${color}`}>{value}</p>
+    <p className="analytics-stat" style={{ color }}>
+      {value}
+    </p>
   </div>
 );
 

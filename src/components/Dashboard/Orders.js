@@ -38,16 +38,22 @@ const Orders = () => {
         `Are you sure you want to update the status to "${newStatus}"?`
       );
       if (!confirmUpdate) return;
-
+  
       console.log("Sending update request:", { parcelId, newStatus });
-
+  
       const response = await axios.post(
         `https://sendit-backend-j83j.onrender.com/parcels/${parcelId}/update_status`,
-        { status: newStatus }
+        { status: newStatus },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            // Add any required headers (e.g., authorization token)
+          },
+        }
       );
-
+  
       console.log("Response from server:", response.data);
-
+  
       if (response.status === 200) {
         alert("Status updated successfully!");
         setOrders((prevOrders) =>
@@ -64,9 +70,11 @@ const Orders = () => {
         errorMessage = error.response.data.message;
       }
       console.error("Error updating status:", errorMessage);
+      console.error("Error details:", error.response?.data); // Log detailed error response
       alert(`Failed to update status: ${errorMessage}`);
     }
   };
+
 
   // Function to handle hiding the order (removing it from the UI)
   const handleHideOrder = (parcelId) => {
