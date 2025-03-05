@@ -4,33 +4,34 @@ import axios from 'axios';
 import '../../styles/UserInTransit.css';
 
 const UserInTransit = () => {
-  const [inTransitOrders, setInTransitOrders] = useState([]);
+  const [orders, setOrders] = useState([]); // All orders
+  const [inTransitOrders, setInTransitOrders] = useState([]); // Filtered in-transit orders
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null); // Track the selected order for details
 
-  // Fetch in-transit orders from backend
+  // Fetch all orders from backend
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('https://sendit-backend-j83j.onrender.com/parcels', {
-          params: {
-            status: 'In Transit', // Filter by status
-          },
-        });
+        const response = await axios.get('https://sendit-backend-j83j.onrender.com/parcels');
         console.log('API response:', response.data); // Log to check data structure
 
         // Ensure the response is an array
-        const orders = Array.isArray(response.data) ? response.data : [];
-        console.log('Processed orders:', orders);
+        const allOrders = Array.isArray(response.data) ? response.data : [];
+        console.log('All orders:', allOrders);
 
-        if (orders.length > 0) {
-          setInTransitOrders(orders);
+        if (allOrders.length > 0) {
+          setOrders(allOrders);
+
+          // Filter orders with status "InTransit" (exact match)
+          const filteredOrders = allOrders.filter((order) => order.status === 'InTransit');
+          setInTransitOrders(filteredOrders);
         } else {
           console.warn('No orders found.');
         }
       } catch (err) {
-        console.error('Error fetching in-transit orders:', err);
+        console.error('Error fetching orders:', err);
         setError('Failed to load orders. Please try again later.');
       } finally {
         setLoading(false);
