@@ -40,22 +40,24 @@
   color: #1F2937;
 }
 
+/* Updated Button Styles */
 .modal-actions {
   display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
+  gap: 1.5rem; /* Increased gap between buttons */
+  margin-top: 2rem; /* Added more space above the buttons */
   justify-content: center;
 }
 
 .modal-button {
-  flex: 1;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
   font-weight: 500;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, transform 0.2s;
   cursor: pointer;
   border: none;
   font-size: 0.875rem;
+  min-width: 120px; /* Ensure buttons have a consistent width */
+  text-align: center;
 }
 
 .modal-button.button-primary {
@@ -65,15 +67,34 @@
 
 .modal-button.button-primary:hover {
   background-color: #4338CA;
+  transform: translateY(-2px); /* Add a slight lift on hover */
+}
+
+.modal-button.button-primary:active {
+  transform: translateY(0); /* Reset lift on click */
 }
 
 .modal-button.button-secondary {
   background-color: #E5E7EB;
   color: #374151;
+  border: 1px solid #D1D5DB; /* Add a border for better contrast */
 }
 
 .modal-button.button-secondary:hover {
   background-color: #D1D5DB;
+  transform: translateY(-2px); /* Add a slight lift on hover */
+}
+
+.modal-button.button-secondary:active {
+  transform: translateY(0); /* Reset lift on click */
+}
+
+/* Disabled Button Styles */
+.modal-button:disabled {
+  background-color: #E5E7EB;
+  color: #A0AEC0;
+  cursor: not-allowed;
+  transform: none; /* Disable hover effect */
 }
 
 /* Slide-in animation for the modal */
