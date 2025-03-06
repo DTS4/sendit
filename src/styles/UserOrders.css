@@ -112,17 +112,17 @@
 
 .order-status.in_transit {
   background: #ffe5cc;
-  color: #ff9800;
+  color: #300ef1;
 }
 
 .order-status.delivered {
   background: #d4edda;
-  color: #155724;
+  color: #03300d;
 }
 
 .order-status.cancelled {
   background: #f8d7da;
-  color: #721c24;
+  color: #d41024;
 }
 
 .view-details {
