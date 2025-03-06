@@ -1,55 +1,67 @@
-import React, { useEffect, useState } from 'react';
-import { Users, DollarSign, ShoppingBag, TrendingUp } from 'lucide-react';
-import { useAuth } from "../../context/AuthContext";
+import React, { useEffect, useState } from "react";
+import { Users, DollarSign, ShoppingBag, TrendingUp } from "lucide-react";
+import "../../styles/DashboardHome.css";
+import { useAuth } from "../../context/AuthContext"; // Check the correct path
 
 const DashboardHome = () => {
   const [stats, setStats] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const { token } = useAuth();
+  const { token } = useAuth(); // Get the token from AuthContext
 
   // Fetch stats from the backend
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        setLoading(true);
-        setError(null);
-
-        const response = await fetch("https://sendit-backend-j83j.onrender.com/stats", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
+        const response = await fetch(
+          "https://sendit-backend-j83j.onrender.com/stats",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Fixed syntax
+            },
+          }
+        );
         if (!response.ok) {
-          throw new Error(`Failed to fetch stats: ${response.statusText}`);
+          throw new Error("Failed to fetch stats");
         }
-
         const data = await response.json();
+        console.log("API Response:", data); // Log the API response for debugging
+
         setStats([
-          { label: 'Total Customers', value: data.total_deliveries || "N/A", icon: Users, trend: '+12.5%', color: 'blue' },
-          { label: 'Total Revenue', value: `$${data.delivered_orders || "N/A"}`, icon: DollarSign, trend: '+8.2%', color: 'green' },
-          { label: 'Total Orders', value: data.pending_orders || "N/A", icon: ShoppingBag, trend: '+3.8%', color: 'purple' },
-          { label: 'Growth Rate', value: `${data.in_transit_orders || "N/A"}%`, icon: TrendingUp, trend: '+2.4%', color: 'yellow' },
+          {
+            label: "Total Orders",
+            value: data.total_deliveries || "N/A",
+            icon: Users,
+            trend: "+12.5%",
+            color: "blue",
+          },
+          {
+            label: "Total Revenue",
+            value: `$${data.delivered_orders || "N/A"}`,
+            icon: DollarSign,
+            trend: "+8.2%",
+            color: "red",
+          },
+          {
+            label: "Delivered",
+            value: data.delivered_orders || "N/A",
+            icon: ShoppingBag,
+            trend: "+3.8%",
+            color: "green",
+          },
+          {
+            label: "Growth Rate",
+            value: `${data.in_transit_orders || "N/A"}%`,
+            icon: TrendingUp,
+            trend: "+2.4%",
+            color: "yellow",
+          },
         ]);
       } catch (error) {
         console.error("Error fetching stats:", error);
-        setError(error.message);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchStats();
   }, [token]);
-
-  if (loading) {
-    return <div className="dashboard-container">Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="dashboard-container">Error: {error}</div>;
-  }
 
   return (
     <div className="dashboard-container">
@@ -70,7 +82,7 @@ const DashboardHome = () => {
               </div>
               <div className="trend-indicator">
                 <span className="trend-positive">{stat.trend}</span>
-                <span className="trend-text">vs last month</span>
+                <span className="trend-text">vs Last Month</span>
               </div>
             </div>
           );

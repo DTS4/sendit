@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import UserSidebar from '../components/Dashboard/UserSidebar';
-import UserHeader from '../components/Dashboard/UserHeader';
 import UserOrders from '../components/Dashboard/UserOrders';
 import UserItems from '../components/Dashboard/UserItems';
 import UserNewOrder from '../components/Dashboard/UserNewOrder';
@@ -13,7 +12,6 @@ import '../styles/UserDelivered.css';
 import '../styles/UserOrders.css';
 import '../styles/UserItems.css';
 import '../styles/UserSidebar.css';
-import '../styles/UserHeader.css';
 import '../styles/UserDashboard.css';
 import '../styles/UserNewOrder.css';
 
@@ -43,7 +41,6 @@ const UserDashboard = () => {
     <div className="user-dashboard">
       <UserSidebar activeSection={activeSection} setActiveSection={setActiveSection} />
       <div className="dashboard-main">
-        <UserHeader />
         <main className="dashboard-content">
           <div className="dashboard-container">
             {renderContent()}

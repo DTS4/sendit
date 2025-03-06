@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Sidebar from '../components/Dashboard/Sidebar';
-import Navbar from '../components/Dashboard/Navbar';
 import DashboardHome from '../components/Dashboard/DashboardHome';
 import Profile from '../components/Dashboard/Profile';
 import Analytics from '../components/Dashboard/Analytics';
@@ -11,7 +10,6 @@ import '../styles/Orders.css';
 import '../styles/Profile.css';
 import '../styles/Settings.css';
 import '../styles/Sidebar.css';
-import '../styles/Navbar.css';
 import '../styles/DashboardHome.css';
 
 export default function DashboardPage() {
@@ -37,9 +35,8 @@ export default function DashboardPage() {
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
-      <div className="flex-1 ml-64">
-        <Navbar />
-        <main className="mt-16 p-6">
+      <div className="flex-1 ml-64 p-6">
+        <main>
           <div className="dashboard-container">
             {renderContent()}
           </div>

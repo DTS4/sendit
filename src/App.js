@@ -9,11 +9,16 @@ import ProtectedRoute from './component/ProtectedRoute';
 import UserDashboard from './component/UserDashboard';
 import DashboardPage from './component/DashboardPage';
 import './App.css';
+import { ToastContainer } from 'react-toastify'; // Import ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 
 function App() {
   return (
     <AuthProvider>
       <Router>
+        {/* Wrap the entire app with ToastContainer for notifications */}
+        <ToastContainer position="top-right" autoClose={3000} closeOnClick />
+
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
@@ -22,7 +27,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
 
-          {/* Protected Routes */}
+          {/* Protected Routes for User */}
           <Route
             path="/dashboard/user"
             element={<ProtectedRoute role="user" />}
@@ -30,6 +35,7 @@ function App() {
             <Route index element={<UserDashboard />} />
           </Route>
 
+          {/* Protected Routes for Admin */}
           <Route
             path="/dashboard/admin/*" // Add trailing * to match nested routes
             element={<ProtectedRoute role="admin" />}

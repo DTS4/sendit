@@ -137,17 +137,17 @@ function HomePage() {
             <div className="feature-card">
               <img src="/express-delivery.png" alt="Express Delivery" className="feature-icon" />
               <h3 className="feature-title">Express Delivery</h3>
-              <p className="feature-description">Same-day delivery available.</p>
+              <p className="feature-description">Your packages are prioritized for speed, ensuring timely arrivals near or far. Trust our efficient network for secure, seamless service from start to finish.</p>
             </div>
             <div className="feature-card">
               <img src="/tracking.png" alt="Real-time Tracking" className="feature-icon" />
               <h3 className="feature-title">Real-time Tracking</h3>
-              <p className="feature-description">Track your packages live.</p>
+              <p className="feature-description">Track your parcel in real-time. Follow its journey on a map, get live updates, and instant delivery notifications. Full transparency, no guesswork.</p>
             </div>
             <div className="feature-card">
               <img src="/secure-handling.png" alt="Secure Handling" className="feature-icon" />
               <h3 className="feature-title">Secure Handling</h3>
-              <p className="feature-description">Your packages are safe with us.</p>
+              <p className="feature-description">Swift, secure parcel delivery—on time, every time. Local or long-distance, our trusted network ensures efficiency and reliability. Seamless from pickup to drop-off.</p>
             </div>
           </div>
         </div>
@@ -163,7 +163,7 @@ function HomePage() {
             </div>
             <div className="contact-item">
               <FaPhone className="contact-icon" />
-              <p>+254 7 000 000</p>
+              <p>+254 7 2948 9713</p>
             </div>
             <div className="contact-item">
               <FaEnvelope className="contact-icon" />

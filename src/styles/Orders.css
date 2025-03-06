@@ -1,62 +1,177 @@
-.orders-container {
-  padding: 24px;
-  animation: fadeIn 0.5s ease-out;
-  width: 800px;
-  justify-self: center;
+/* Admin Orders Container */
+.admin-orders-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.orders-title {
+/* Admin Orders Title */
+.admin-orders-title {
   font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
 }
 
-.orders-card {
+/* Admin Orders Card */
+.admin-orders-card {
   background: white;
   border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.orders-table {
+/* Orders Table */
+.admin-orders-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 15px;
 }
 
-.orders-table th, .orders-table td {
+.admin-orders-table th,
+.admin-orders-table td {
   padding: 12px;
   text-align: left;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #ddd;
 }
 
-.order-row:hover {
-  background-color: #f8fafc;
+.admin-orders-table th {
+  font-size: 14px;
+  font-weight: bold;
+  color: #444;
+  background-color: #f9fafb; /* Light gray background for headers */
 }
 
+.admin-orders-table td {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Status Badges */
 .status-badge {
-  padding: 4px 12px;
-  border-radius: 16px;
+  padding: 4px 8px;
+  border-radius: 4px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: bold;
   display: inline-block;
 }
 
-.status-shipped {
-  background-color: #dcfce7;
-  color: #16a34a;
+.status-pending {
+  background-color: #fdd835; /* Yellow */
+  color: #333;
 }
 
-.status-processing {
-  background-color: #fef9c3;
-  color: #ca8a04;
+.status-in-transit {
+  background-color: #ff9800; /* Orange */
+  color: white;
 }
 
 .status-delivered {
-  background-color: #dbeafe;
-  color: #1d4ed8;
+  background-color: #4caf50; /* Green */
+  color: white;
 }
 
-.status-pending {
-  background-color: #f1f5f9;
-  color: #64748b;
+.status-cancelled {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+/* Action Buttons */
+.admin-status-button {
+  background-color: #2563eb; /* Blue */
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.admin-status-button:hover {
+  background-color: #1d4ed8; /* Darker blue on hover */
+  transform: translateY(-1px); /* Subtle lift effect */
+}
+
+.admin-status-button:disabled {
+  background-color: #ccc; /* Gray when disabled */
+  cursor: not-allowed;
+}
+
+/* Delete Button (New) */
+.admin-delete-button {
+  background-color: #dc3545; /* Red */
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.admin-delete-button:hover {
+  background-color: #c82333; /* Darker red on hover */
+  transform: translateY(-1px); /* Subtle lift effect */
+}
+
+/* Toastify Styles */
+.toastify__toast--success {
+  background-color: #28a745; /* Green background for success */
+  color: white;
+}
+
+.toastify__toast--error {
+  background-color: #dc3545; /* Red background for errors */
+  color: white;
+}
+
+.toastify__toast {
+  font-size: 14px;
+  padding: 15px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+}
+
+/* Loading State */
+.loading-state {
+  text-align: center;
+  font-size: 16px;
+  color: #666;
+  margin-top: 20px;
+}
+
+/* Error State */
+.error-state {
+  text-align: center;
+  font-size: 16px;
+  color: #f44336;
+  margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-orders-container {
+    padding: 15px;
+  }
+
+  .admin-orders-table th,
+  .admin-orders-table td {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .status-badge {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+
+  .admin-status-button,
+  .admin-hide-button,
+  .admin-delete-button {
+    font-size: 10px;
+    padding: 5px 10px;
+  }
 }

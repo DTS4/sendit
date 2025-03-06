@@ -1,155 +1,225 @@
+/* General Reset
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+} */
+
+/* Container Styling */
 .delivered-container {
-    padding: 20px;
-    background-color: #f8f9fa;
-  }
-  
-  .delivered-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .delivered-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .delivered-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-  }
-  
-  .delivered-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-  }
-  
-  .order-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .icon-green {
-    width: 24px;
-    height: 24px;
-    color: #28a745;
-    margin-right: 8px;
-  }
-  
-  .order-number {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .delivery-date {
-    color: #666;
-    font-size: 14px;
-  }
-  
-  .delivered-details {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  
-  .detail-label {
-    font-size: 14px;
-    color: #666;
-  }
-  
-  .detail-value {
-    font-size: 16px;
-    color: #333;
-  }
-  
-  .items-section {
-    border-top: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
-  }
-  
-  .items-title {
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #444;
-  }
-  
-  .item-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-  }
-  
-  .item-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .item-name {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .item-quantity {
-    color: #666;
-    font-size: 14px;
-  }
-  
-  .review-button {
-    display: flex;
-    align-items: center;
-    color: #ffc107;
-    font-size: 14px;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .review-button:hover {
-    color: #e0a800;
-  }
-  
-  .icon-yellow {
-    width: 16px;
-    height: 16px;
-    margin-right: 4px;
-  }
-  
-  .reviewed-text {
-    color: #28a745;
-    font-size: 14px;
-  }
-  
-  .total-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .total-amount {
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .view-details-button {
-    padding: 8px 12px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 14px;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .view-details-button:hover {
-    background-color: #0056b3;
-  }
-  
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f0f7ff; /* Light blue background */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.delivered-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1a1a1a; /* Dark text */
+  margin-bottom: 20px;
+}
+
+.delivered-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.delivered-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #dbeafe; /* Slightly darker blue */
+}
+
+.delivered-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.order-info {
+  display: flex;
+  align-items: center;
+}
+
+.icon-green {
+  width: 24px;
+  height: 24px;
+  color: #28a745; /* Green icon */
+  margin-right: 8px;
+}
+
+.order-number {
+  font-weight: bold;
+  color: #1a1a1a;
+}
+
+.delivery-date {
+  color: #666;
+  font-size: 14px;
+}
+
+.delivered-details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.detail-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.detail-value {
+  font-size: 16px;
+  color: #333;
+}
+
+.items-section {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.items-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #444;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.item-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item-name {
+  font-weight: bold;
+  color: #333;
+}
+
+.item-quantity {
+  color: #666;
+  font-size: 14px;
+}
+
+.review-button {
+  display: flex;
+  align-items: center;
+  color: #ffc107; /* Yellow icon */
+  font-size: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.review-button:hover {
+  color: #e0a800;
+}
+
+.icon-yellow {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+}
+
+.reviewed-text {
+  color: #28a745;
+  font-size: 14px;
+}
+
+.total-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.total-amount {
+  font-weight: bold;
+  color: #333;
+}
+
+.view-details-button {
+  padding: 8px 12px;
+  background-color: #2563eb; /* Primary blue */
+  color: white;
+  font-size: 14px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-details-button:hover {
+  background-color: #1d4ed8; /* Darker blue */
+}
+
+/* Modal Styles */
+.order-details-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.modal-body .detail-row {
+  margin-bottom: 10px;
+}
+
+.modal-body .label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.items-section {
+  margin-top: 20px;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}

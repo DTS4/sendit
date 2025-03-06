@@ -4,9 +4,9 @@ import { useAuth } from '../context/AuthContext';
 function ProtectedRoute({ role, redirectPath = '/', loginPath = '/login', children }) {
   const { user } = useAuth();
 
-  // If the user is not logged in, redirect to the login page
+  // If the user is not logged in, redirect to the home page ("/") instead of the login page
   if (!user) {
-    return <Navigate to={loginPath} replace />;
+    return <Navigate to={redirectPath} replace />;
   }
 
   // If the user's role does not match the required role, redirect to the specified path

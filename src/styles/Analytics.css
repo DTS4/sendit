@@ -83,3 +83,42 @@
     transform: translateY(0);
   }
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .analytics-container {
+    padding: 16px;
+  }
+
+  .analytics-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .analytics-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+  }
+
+  .analytics-card {
+    padding: 16px;
+  }
+
+  .analytics-card-title {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .analytics-stat {
+    font-size: 20px;
+  }
+
+  .chart-container {
+    padding: 16px;
+  }
+
+  .chart-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+}
