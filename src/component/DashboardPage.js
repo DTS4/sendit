@@ -4,16 +4,15 @@ import DashboardHome from '../components/Dashboard/DashboardHome';
 import Profile from '../components/Dashboard/Profile';
 import Analytics from '../components/Dashboard/Analytics';
 import Orders from '../components/Dashboard/Orders';
-import Settings from '../components/Dashboard/Settings';
 import '../styles/Analytics.css';
 import '../styles/Orders.css';
 import '../styles/Profile.css';
-import '../styles/Settings.css';
 import '../styles/Sidebar.css';
 import '../styles/DashboardHome.css';
 
 export default function DashboardPage() {
   const [activeSection, setActiveSection] = useState('home');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State for sidebar toggle
 
   const renderContent = () => {
     switch (activeSection) {
@@ -25,8 +24,6 @@ export default function DashboardPage() {
         return <Analytics />;
       case 'orders':
         return <Orders />;
-      case 'settings':
-        return <Settings />;
       default:
         return <DashboardHome />;
     }
@@ -34,8 +31,16 @@ export default function DashboardPage() {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      <Sidebar activeSection={activeSection} setActiveSection={setActiveSection} />
-      <div className="flex-1 ml-64 p-6">
+      {/* Pass setIsSidebarOpen to Sidebar */}
+      <Sidebar
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen} // Pass the setter function
+      />
+
+      {/* Main Content Area */}
+      <div className={`flex-1 p-6 ${isSidebarOpen ? 'ml-64' : 'ml-0'}`}>
         <main>
           <div className="dashboard-container">
             {renderContent()}

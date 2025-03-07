@@ -47,13 +47,74 @@
   color: #666;
 }
 
+/* Responsive Table */
+@media (max-width: 768px) {
+  .admin-orders-table,
+  .admin-orders-table thead,
+  .admin-orders-table tbody,
+  .admin-orders-table th,
+  .admin-orders-table td,
+  .admin-orders-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .admin-orders-table thead {
+    display: none; /* Hide table headers */
+  }
+
+  .admin-orders-table td {
+    position: relative;
+    padding-left: 50%; /* Space for labels */
+    text-align: right;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .admin-orders-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  /* Highlight Order ID Column */
+  .admin-orders-table td[data-label="Order ID"] {
+    background-color: #e6f2ff; /* Light blue background for Order ID */
+  }
+}
+
 /* Status Badges */
 .status-badge {
+  position: relative;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 12px;
   font-weight: bold;
   display: inline-block;
+  cursor: pointer;
+}
+
+.status-badge::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.status-badge:hover::after {
+  opacity: 1;
+  visibility: visible;
 }
 
 .status-pending {
@@ -77,6 +138,18 @@
 }
 
 /* Action Buttons */
+.actions-container {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.admin-status-button,
+.admin-delete-button {
+  flex: 1; /* Buttons take equal width */
+  margin-bottom: 8px; /* Add spacing */
+}
+
 .admin-status-button {
   background-color: #2563eb; /* Blue */
   color: white;
@@ -85,7 +158,6 @@
   border-radius: 4px;
   font-size: 12px;
   cursor: pointer;
-  margin-right: 8px;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
@@ -99,7 +171,15 @@
   cursor: not-allowed;
 }
 
-/* Delete Button (New) */
+/* Delivered Button */
+.admin-status-button.delivered {
+  background-color: #4caf50; /* Light green */
+}
+
+.admin-status-button.delivered:hover {
+  background-color: #388e3c; /* Darker green on hover */
+}
+
 .admin-delete-button {
   background-color: #dc3545; /* Red */
   color: white;
@@ -116,25 +196,6 @@
   transform: translateY(-1px); /* Subtle lift effect */
 }
 
-/* Toastify Styles */
-.toastify__toast--success {
-  background-color: #28a745; /* Green background for success */
-  color: white;
-}
-
-.toastify__toast--error {
-  background-color: #dc3545; /* Red background for errors */
-  color: white;
-}
-
-.toastify__toast {
-  font-size: 14px;
-  padding: 15px 20px;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 10px;
-}
-
 /* Loading State */
 .loading-state {
   text-align: center;
@@ -149,29 +210,4 @@
   font-size: 16px;
   color: #f44336;
   margin-top: 20px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .admin-orders-container {
-    padding: 15px;
-  }
-
-  .admin-orders-table th,
-  .admin-orders-table td {
-    padding: 10px;
-    font-size: 12px;
-  }
-
-  .status-badge {
-    font-size: 10px;
-    padding: 3px 6px;
-  }
-
-  .admin-status-button,
-  .admin-hide-button,
-  .admin-delete-button {
-    font-size: 10px;
-    padding: 5px 10px;
-  }
 }

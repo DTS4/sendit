@@ -44,11 +44,6 @@
   color: #007bff;
 }
 
-.summary-green {
-  background-color: #e6ffe6;
-  color: #28a745;
-}
-
 .summary-purple {
   background-color: #f2e6ff;
   color: #6f42c1;
@@ -80,7 +75,7 @@
 
 .orders-table th,
 .orders-table td {
-  padding: 16px; /* Increased padding for larger rows */
+  padding: 16px;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
@@ -96,14 +91,76 @@
   color: #666;
 }
 
+/* Responsive Table */
+@media (max-width: 768px) {
+  .orders-table,
+  .orders-table thead,
+  .orders-table tbody,
+  .orders-table th,
+  .orders-table td,
+  .orders-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .orders-table thead {
+    display: none; /* Hide table headers */
+  }
+
+  .orders-table td {
+    position: relative;
+    padding-left: 40%; /* Reduced space for labels */
+    text-align: right;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .orders-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    font-weight: bold;
+    text-align: left;
+    font-size: 12px; /* Slightly smaller font size */
+  }
+
+  /* Highlight Order # Column */
+  .orders-table td[data-label="Order #"] {
+    background-color: #e6f2ff; /* Light blue background */
+  }
+}
+
+/* Status Badges */
 .order-status {
-  background: #e6f2ff;
-  color: #007bff;
-  padding: 5px 10px; /* Reduced padding for smaller status field */
-  border-radius: 10px;
+  position: relative;
+  padding: 5px 10px;
+  border-radius: 20px;
   font-size: 12px;
   font-weight: bold;
-  display: inline-block; /* Ensure it doesn't take up full width */
+  display: inline-block;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.order-status::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.order-status:hover::after {
+  opacity: 1;
+  visibility: visible;
 }
 
 .order-status.pending {
@@ -112,47 +169,45 @@
 }
 
 .order-status.in_transit {
-  background: #ffe5cc;
-  color: #300ef1;
+  background: #e6f2ff; /* Light blue for In Transit */
+  color: #007bff;
 }
 
 .order-status.delivered {
   background: #d4edda;
-  color: #03300d;
+  color: #155724;
 }
 
 .order-status.cancelled {
   background: #f8d7da;
-  color: #d41024;
+  color: #721c24;
 }
 
-.view-details {
-  color: #007bff;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.view-details:hover {
-  text-decoration: underline;
-}
-
+/* Buttons */
 .actions-container {
   display: flex;
-  gap: 16px; /* Increased gap between buttons */
-  align-items: center;
+  gap: 8px; /* Reduced gap for better spacing */
+  flex-wrap: wrap;
+}
+
+.update-order,
+.cancel-order,
+.delete-order {
+  flex: 1;
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none; /* Remove borders */
+  outline: none; /* Remove focus outline */
 }
 
 .update-order {
   background-color: #2563eb;
   color: white;
-  border: none;
-  padding: 8px 12px; /* Adjusted padding for better button size */
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .update-order:hover {
@@ -163,16 +218,20 @@
 .cancel-order {
   background-color: #dc3545;
   color: white;
-  border: none;
-  padding: 8px 12px; /* Adjusted padding for better button size */
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .cancel-order:hover {
   background-color: #c82333;
+  transform: translateY(-1px);
+}
+
+.delete-order {
+  background-color: #f8d7da; /* Light red background */
+  color: #721c24; /* Dark red text */
+}
+
+.delete-order:hover {
+  background-color: #f5c6cb; /* Slightly darker red on hover */
   transform: translateY(-1px);
 }
 
@@ -183,33 +242,33 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  backdrop-filter: blur(8px); /* Blur effect */
   display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  z-index: 1000; /* Ensure it's above other elements */
 }
 
 .modal {
   background: white;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  max-width: 400px;
-  width: 90%;
-  animation: slideIn 0.3s ease;
-  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  max-width: 400px; /* Maximum width of the modal */
+  width: 90%; /* Responsive width */
+  animation: slideIn 0.3s ease; /* Smooth entry animation */
+  position: relative; /* Relative positioning for internal elements */
 }
 
 @keyframes slideIn {
   from {
-    transform: translateY(-20px);
-    opacity: 0;
+    transform: translateY(-20px); /* Start slightly above */
+    opacity: 0; /* Fully transparent */
   }
   to {
-    transform: translateY(0);
-    opacity: 1;
+    transform: translateY(0); /* End at the center */
+    opacity: 1; /* Fully visible */
   }
 }
 
@@ -221,20 +280,7 @@
   text-align: center;
 }
 
-.modal form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.modal label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-}
-
-.modal input,
-.modal select {
+.modal input {
   width: 100%;
   padding: 10px;
   border: 1px solid #ddd;
@@ -244,8 +290,7 @@
   transition: border-color 0.3s ease;
 }
 
-.modal input:focus,
-.modal select:focus {
+.modal input:focus {
   border-color: #007bff;
 }
 
@@ -287,25 +332,6 @@
   transform: translateY(-2px);
 }
 
-/* Toastify Styles */
-.toastify__toast--success {
-  background-color: #28a745; /* Green background for success */
-  color: white;
-}
-
-.toastify__toast--error {
-  background-color: #dc3545; /* Red background for errors */
-  color: white;
-}
-
-.toastify__toast {
-  font-size: 14px;
-  padding: 15px 20px;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 10px;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .modal {
@@ -313,12 +339,11 @@
     padding: 15px;
   }
 
-  .modal h3 {
+  .modal1 h3 {
     font-size: 18px;
   }
 
-  .modal input,
-  .modal select {
+  .modal input {
     font-size: 13px;
   }
 
@@ -329,5 +354,25 @@
 
   .modal-button {
     width: 100%;
+  }
+
+  /* Reduce gaps and padding for better responsiveness */
+  .actions-container {
+    gap: 4px; /* Smaller gap for buttons */
+  }
+
+  .update-order,
+  .cancel-order,
+  .delete-order {
+    padding: 6px 10px; /* Smaller padding */
+    font-size: 11px; /* Smaller font size */
+  }
+
+  .orders-table td {
+    padding-left: 35%; /* Further reduce space for labels */
+  }
+
+  .orders-table td::before {
+    font-size: 11px; /* Even smaller font size for labels */
   }
 }

@@ -6,17 +6,12 @@ import UserNewOrder from '../components/Dashboard/UserNewOrder';
 import UserCancelled from '../components/Dashboard/UserCancelled';
 import UserInTransit from '../components/Dashboard/UserInTransit';
 import UserDelivered from '../components/Dashboard/UserDelivered';
-import '../styles/UserCancelled.css';
-import '../styles/UserInTransit.css';
-import '../styles/UserDelivered.css';
-import '../styles/UserOrders.css';
-import '../styles/UserItems.css';
 import '../styles/UserSidebar.css';
 import '../styles/UserDashboard.css';
-import '../styles/UserNewOrder.css';
 
 const UserDashboard = () => {
   const [activeSection, setActiveSection] = useState('orders');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const renderContent = () => {
     switch (activeSection) {
@@ -39,10 +34,16 @@ const UserDashboard = () => {
 
   return (
     <div className="user-dashboard">
-      <UserSidebar activeSection={activeSection} setActiveSection={setActiveSection} />
-      <div className="dashboard-main">
+      {/* Pass setIsSidebarOpen to UserSidebar */}
+      <UserSidebar
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
+      <div className={`dashboard-main ${isSidebarOpen ? "ml-64" : "ml-0"}`}>
         <main className="dashboard-content">
-          <div className="dashboard-container">
+          <div className="dashboard-container1">
             {renderContent()}
           </div>
         </main>

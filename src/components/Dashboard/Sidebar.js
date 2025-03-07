@@ -1,39 +1,46 @@
 import React, { useState } from "react";
-import { Home, Settings, BarChart2, ShoppingBag, LogOut } from "lucide-react";
+import { Home, BarChart2, ShoppingBag, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext"; // Adjust the path as needed
+import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import "../../styles/Sidebar.css";
 
-const Sidebar = ({ activeSection, setActiveSection }) => {
+const Sidebar = ({ activeSection, setActiveSection, isSidebarOpen, setIsSidebarOpen }) => {
   const navigate = useNavigate();
-  const { clearAuth } = useAuth(); // Get the clearAuth function from AuthContext
+  const { clearAuth } = useAuth();
 
-  const [showConfirm, setShowConfirm] = useState(false); // State for confirmation dialog
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const menuItems = [
     { id: "home", label: "Home", icon: Home },
     { id: "orders", label: "Orders", icon: ShoppingBag },
     { id: "analytics", label: "Analytics", icon: BarChart2 },
-    { id: "settings", label: "Settings", icon: Settings },
   ];
 
   const handleLogout = () => {
-    clearAuth(); // Clear authentication data
-    navigate("/"); // Redirect to home page
-    toast.success("You have been logged out successfully!", { autoClose: 3000 }); // Display success message
+    clearAuth();
+    navigate("/");
+    toast.success("You have been logged out successfully!", { autoClose: 3000 });
   };
 
   const confirmLogout = () => {
-    setShowConfirm(true); // Show the confirmation dialog
+    setShowConfirm(true);
   };
 
   const cancelLogout = () => {
-    setShowConfirm(false); // Hide the confirmation dialog
+    setShowConfirm(false);
   };
 
   return (
-    <aside className="sidebar-container">
+    <aside className={`sidebar-container ${isSidebarOpen ? "open" : ""}`}>
+      {/* Hamburger Menu Button for Small Screens */}
+      <button
+        className="hamburger-menu"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)} // Toggle sidebar
+      >
+        ☰
+      </button>
+
       <div className="sidebar-header">
         <span className="sidebar-title">AdminDashboard</span>
       </div>

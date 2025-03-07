@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Package, PlusCircle, XCircle, Truck, Home, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext"; // Adjust the path as needed
+import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
+import "../../styles/UserSidebar.css";
 
 const UserSidebar = ({ activeSection, setActiveSection }) => {
   const navigate = useNavigate();
   const { clearAuth } = useAuth();
 
   const [showConfirm, setShowConfirm] = useState(false); // State for confirmation dialog
+  const [isOpen, setIsOpen] = useState(false); // State for sidebar toggle
 
   const menuItems = [
     { id: "orders", label: "All Orders", icon: Package },
@@ -21,7 +23,7 @@ const UserSidebar = ({ activeSection, setActiveSection }) => {
   const handleLogout = () => {
     clearAuth(); // Clear authentication data
     navigate("/"); // Redirect to home page
-    toast.success("You have been logged out successfully!", { autoClose: 3000 }); // Display success message
+    toast.success("You have been logged out successfully!", { autoClose: 3000 });
   };
 
   const confirmLogout = () => {
@@ -32,8 +34,17 @@ const UserSidebar = ({ activeSection, setActiveSection }) => {
     setShowConfirm(false); // Hide the confirmation dialog
   };
 
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="sidebar-container">
+    <div className={`sidebar-container ${isOpen ? "open" : ""}`}>
+      {/* Hamburger Menu Button for Small Screens */}
+      <button className="hamburger-menu" onClick={toggleSidebar}>
+        ☰
+      </button>
+
       <div className="sidebar-header">
         <h1 className="sidebar-title">User Dashboard</h1>
       </div>

@@ -1,3 +1,4 @@
+/* User Dashboard */
 .user-dashboard {
   display: flex;
   height: 100vh;
@@ -6,27 +7,162 @@
 
 .sidebar-container {
   width: 250px;
-  background-color: #ffffff;
-  border-right: 1px solid #ddd;
-  padding: 20px;
+  background: #f0f7ff;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  height: 95vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid #eaeaea;
+  transition: transform 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .sidebar-container {
+    left: -250px; /* Hide the sidebar off-screen */
+  }
+
+  .sidebar-container.open {
+    left: 0; /* Show the sidebar when open */
+  }
+}
+
+.hamburger-menu {
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: -40px;
+  background: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: block;
+  }
 }
 
 .dashboard-main {
   flex-grow: 1;
+  margin-left: 250px;
+  transition: margin-left 0.3s ease;
+}
+
+.dashboard-main.ml-0 {
+  margin-left: 0;
+}
+
+.dashboard-main.ml-64 {
+  margin-left: 64px;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+}
+
+.status-badge::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.status-badge:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+.status-pending {
+  background-color: #fdd835; /* Yellow */
+  color: #333;
+}
+
+.status-in-transit {
+  background-color: #ff9800; /* Orange */
+  color: white;
+}
+
+.status-delivered {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+
+.status-cancelled {
+  background-color: #f44336; /* Red */
+  color: white;
+}
+
+/* Buttons */
+.actions-container {
   display: flex;
-  flex-direction: column;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.dashboard-content {
-  flex-grow: 1;
-  padding: 20px;
-  overflow-y: auto;
+.admin-status-button,
+.admin-delete-button {
+  flex: 1;
+  margin-bottom: 8px;
 }
 
-.dashboard-container {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  height:auto ;
+.admin-status-button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.admin-status-button:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.admin-status-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.admin-delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.admin-delete-button:hover {
+  background-color: #c82333;
+  transform: translateY(-1px);
 }

@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 
 function ForgotPassword() {
-  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -17,8 +16,8 @@ function ForgotPassword() {
     setMessage('');
 
     // Input validation
-    if (!fullName || !email) {
-      setError('Full name and email are required.');
+    if (!email) {
+      setError('Email is required.');
       setLoading(false);
       return;
     }
@@ -33,38 +32,30 @@ function ForgotPassword() {
 
     try {
       // Log the request payload for debugging
-      console.log('Request payload:', { fullName, email });
+      console.log('Request payload:', { email });
 
       const response = await fetch('https://sendit-backend-j83j.onrender.com/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ fullName, email }),
+        body: JSON.stringify({ email }),
       });
 
-      // Handle non-JSON responses (e.g., HTML error pages)
-      const responseText = await response.text();
-      let data;
-      try {
-        // Attempt to parse the response as JSON
-        data = JSON.parse(responseText);
-      } catch (jsonError) {
-        // If the response is not JSON, handle it as an HTML error page
+      // Check if the response is OK (status code 2xx)
+      if (!response.ok) {
+        // Handle non-JSON responses (e.g., HTML error pages)
+        const responseText = await response.text();
         console.error('Non-JSON response:', responseText);
 
-        // Extract the error message from the HTML <p> tag
+        // Attempt to extract an error message from the HTML response
         const errorMessage = responseText.match(/<p>(.*?)<\/p>/)?.[1] || 'Server error: Invalid response format';
         throw new Error(errorMessage);
       }
 
-      // Log the response data for debugging
+      // Parse the response as JSON
+      const data = await response.json();
       console.log('Response data:', data);
-
-      // Check if the response is OK (status code 2xx)
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to send reset link');
-      }
 
       // Set success message
       setMessage(data.message || 'Password reset link sent to your email.');
@@ -94,17 +85,6 @@ function ForgotPassword() {
           </div>
           <h1>Forgot Password</h1>
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>Full Name</label>
-              <input
-                type="text"
-                placeholder="Enter your full name"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                required
-                disabled={loading}
-              />
-            </div>
             <div className="form-group">
               <label>Email</label>
               <input

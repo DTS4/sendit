@@ -1,29 +1,65 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios"; // For API calls
+import React, { useEffect, useState, useCallback } from "react";
 import { toast } from "react-toastify"; // Import toast for notifications
-import "../../styles/Orders.css";
+import '../../styles/UserOrders.css';
 
-const Orders = () => {
-  const [orders, setOrders] = useState([]); // State to store all orders
-  const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
+const UserOrders = () => {
+  const [orders, setOrders] = useState([]);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [monthlyOrders, setMonthlyOrders] = useState(0);
+  const [totalSpent, setTotalSpent] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [updatedDestination, setUpdatedDestination] = useState("");
 
-  // Fetch all orders from the backend
+  const API_BASE_URL = "https://sendit-backend-j83j.onrender.com/parcels";
+
+  // Fetch orders from backend API
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get(
-          "https://sendit-backend-j83j.onrender.com/parcels"
+        const response = await fetch(API_BASE_URL);
+
+        if (!response.ok) throw new Error("Failed to fetch orders");
+
+        const data = await response.json();
+        console.log("Fetched orders:", data);
+
+        // Ensure all dates are valid
+        const validatedOrders = data.map((order) => ({
+          ...order,
+          date: order.date ? new Date(order.date).toISOString() : new Date().toISOString(),
+        }));
+
+        // Sort orders by status priority and then by creation time (latest first)
+        const sortedOrders = validatedOrders.sort((a, b) => {
+          const statusPriority = {
+            Pending: 1,
+            In_Transit: 2,
+            Delivered: 3,
+            Cancelled: 4,
+          };
+
+          // Compare by status priority first
+          if (statusPriority[a.status] !== statusPriority[b.status]) {
+            return statusPriority[a.status] - statusPriority[b.status];
+          }
+
+          // If statuses are the same, sort by creation time (latest first)
+          return new Date(b.date) - new Date(a.date);
+        });
+
+        setOrders(sortedOrders);
+        setTotalOrders(sortedOrders.length);
+        setMonthlyOrders(
+          sortedOrders.filter(
+            (order) => new Date(order.date).getMonth() === new Date().getMonth()
+          ).length
         );
-
-        if (!response.data || !Array.isArray(response.data)) {
-          throw new Error("Invalid response format from server");
-        }
-
-        setOrders(response.data); // Set the fetched orders
+        setTotalSpent(sortedOrders.reduce((total, order) => total + (order.cost || 0), 0));
       } catch (error) {
-        console.error("Error fetching orders:", error.message);
-        setError(error.message || "Failed to fetch orders");
+        console.error("Error fetching orders:", error);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
@@ -32,134 +68,186 @@ const Orders = () => {
     fetchOrders();
   }, []);
 
-  // Function to handle status update by admin
-  const handleStatusUpdate = async (parcelId, newStatus) => {
+  // Function to handle order cancellation
+  const handleCancelOrder = useCallback(async (orderId) => {
+    const confirmCancellation = window.confirm(
+      "Are you sure you want to cancel this order? This action cannot be undone."
+    );
+    if (!confirmCancellation) return;
+
     try {
-      const confirmUpdate = window.confirm(
-        `Are you sure you want to update the status to "${newStatus}"?`
-      );
-      if (!confirmUpdate) return;
-
-      // Normalize the status value
-      const normalizedStatus = newStatus.replace(" ", "").toLowerCase();
-
-      const response = await axios.post(
-        `https://sendit-backend-j83j.onrender.com/parcels/${parcelId}/update_status`,
-        { status: normalizedStatus }
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === orderId ? { ...order, status: "Cancelled" } : order
+        )
       );
 
-      if (response.status === 200) {
-        // Update the local state
-        setOrders((prevOrders) =>
-          prevOrders.map((order) =>
-            order.id === parcelId ? { ...order, status: newStatus } : order
-          )
-        );
-
-        // Show success toast
-        toast.success(`Status updated to "${newStatus}" successfully!`, {
-          autoClose: 3000,
-        });
-      } else {
-        throw new Error("Failed to update status");
-      }
+      toast.success("Order cancelled successfully!", { autoClose: 3000 });
     } catch (error) {
-      let errorMessage = error.message;
-      if (error.response && error.response.data) {
-        console.error("Full error response:", error.response.data); // Debugging
-        errorMessage =
-          error.response.data.message || error.response.data.error || error.message;
-      }
-      console.error("Error updating status:", errorMessage);
-
-      // Show error toast
-      toast.error(`Failed to update status: ${errorMessage}`, { autoClose: 5000 });
+      console.error("Error cancelling order:", error);
+      toast.error(`Failed to cancel order: ${error.message}`, { autoClose: 5000 });
     }
-  };
+  }, []);
 
-  // Function to handle deleting the order from the frontend
-  const handleDeleteOrder = (parcelId) => {
-    const confirmDelete = window.confirm(
+  // Function to handle order update (destination only)
+  const handleUpdateOrder = useCallback(async () => {
+    if (!selectedOrder || !updatedDestination.trim()) {
+      toast.error("Please provide a valid destination.", { autoClose: 3000 });
+      return;
+    }
+
+    if (updatedDestination.length < 3 || updatedDestination.length > 100) {
+      toast.error("Destination must be between 3 and 100 characters.", { autoClose: 3000 });
+      return;
+    }
+
+    try {
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === selectedOrder.id ? { ...order, destination: updatedDestination } : order
+        )
+      );
+
+      handleCloseModal();
+
+      toast.success("Order updated successfully!", { autoClose: 3000 });
+    } catch (error) {
+      console.error("Error updating order:", error);
+      toast.error(`Failed to update order: ${error.message}`, { autoClose: 5000 });
+    }
+  }, [selectedOrder, updatedDestination]);
+
+  // Function to handle order deletion (frontend-only)
+  const handleDeleteOrder = useCallback((orderId) => {
+    const confirmDeletion = window.confirm(
       "Are you sure you want to delete this order? This action cannot be undone."
     );
-    if (!confirmDelete) return;
+    if (!confirmDeletion) return;
 
-    setOrders((prevOrders) => prevOrders.filter((order) => order.id !== parcelId));
+    setOrders((prevOrders) => prevOrders.filter((order) => order.id !== orderId));
 
-    // Show success toast
     toast.success("Order deleted successfully!", { autoClose: 3000 });
+  }, []);
+
+  const handleCloseModal = () => {
+    setSelectedOrder(null);
+    setUpdatedDestination("");
   };
 
-  if (loading) return <p>Loading orders...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (loading) return <p className="loading-state">Loading orders...</p>;
+  if (error) return <p className="error-state">Error: {error}</p>;
 
   return (
-    <div className="admin-orders-container">
-      <h1 className="admin-orders-title">Admin Orders</h1>
+    <div className="orders-container">
+      <h1 className="orders-title">All Orders</h1>
+
+      {/* Order Summary */}
+      <div className="order-summary">
+        <div className="summary-card">
+          <div className="summary-icon summary-blue">📦</div>
+          <div className="summary-info">
+            <h3>Total Orders</h3>
+            <p>{totalOrders}</p>
+          </div>
+        </div>
+
+        <div className="summary-card">
+          <div className="summary-icon summary-purple">💰</div>
+          <div className="summary-info">
+            <h3>Total Spent</h3>
+            <p>${totalSpent.toFixed(2)}</p>
+          </div>
+        </div>
+      </div>
 
       {/* Orders Table */}
-      <div className="admin-orders-card">
-        <table className="admin-orders-table">
+      <div className="orders-table-container">
+        <table className="orders-table">
           <thead>
             <tr>
-              <th>Order ID</th>
-              <th>Customer</th>
-              <th>Tracking ID</th>
-              <th>Items</th> {/* New column for Items */}
-              <th>Pickup Location</th>
-              <th>Destination</th>
-              <th>Distance (km)</th>
-              <th>Weight (kg)</th>
+              <th>Order #</th>
+              <th>Items</th>
+              <th>Date</th>
               <th>Status</th>
+              <th>Amount</th>
+              <th>Destination</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {orders.map((order) => (
-              <tr key={order.id} className="admin-order-row">
-                <td>{order.id}</td>
-                <td>{order.user_id}</td>
-                <td>{order.tracking_id}</td>
-                <td>{order.description || "N/A"}</td> {/* Fetch parcel description */}
-                <td>{order.pickup_location}</td>
-                <td>{order.destination}</td>
-                <td>{order.distance}</td>
-                <td>{order.weight}</td>
-                <td>
-                  <span className={`status-badge ${getStatusClass(order.status)}`}>
+              <tr key={order.id}>
+                <td data-label="Order #">{order.tracking_id}</td>
+                <td data-label="Items">{order.description || "N/A"}</td>
+                <td data-label="Date">
+                  {order.date ? new Date(order.date).toLocaleDateString() : "N/A"}
+                </td>
+                <td data-label="Status">
+                  <span
+                    className={`order-status ${getStatusClass(order.status)}`}
+                    data-tooltip={order.status}
+                  >
                     {order.status}
                   </span>
                 </td>
-                <td>
-                  {/* Update Status Buttons */}
-                  <button
-                    className="admin-status-button"
-                    onClick={() => handleStatusUpdate(order.id, "In_Transit")}
-                    disabled={order.status !== "Pending"} // Only enable if status is "Pending"
-                  >
-                    In Transit
-                  </button>
-                  <button
-                    className="admin-status-button"
-                    onClick={() => handleStatusUpdate(order.id, "Delivered")}
-                    disabled={["Delivered", "Cancelled"].includes(order.status)}
-                  >
-                    Delivered
-                  </button>
-
-                  {/* Delete Button for All Orders */}
-                  <button
-                    className="admin-delete-button"
-                    onClick={() => handleDeleteOrder(order.id)}
-                  >
-                    Delete
-                  </button>
+                <td data-label="Amount">${order.cost?.toFixed(2) || "N/A"}</td>
+                <td data-label="Destination">{order.destination}</td>
+                <td data-label="Actions">
+                  <div className="actions-container">
+                    {order.status !== "Cancelled" && order.status !== "Delivered" && (
+                      <>
+                        <button
+                          className="update-order"
+                          onClick={() => setSelectedOrder(order)}
+                        >
+                          Update
+                        </button>
+                        <button
+                          className="cancel-order"
+                          onClick={() => handleCancelOrder(order.id)}
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    )}
+                    {(order.status === "Delivered" || order.status === "Cancelled") && (
+                      <button
+                        className="delete-order"
+                        onClick={() => handleDeleteOrder(order.id)}
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {/* Modal for Updating Destination */}
+      {selectedOrder && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Update Order</h3>
+            <input
+              type="text"
+              value={updatedDestination}
+              onChange={(e) => setUpdatedDestination(e.target.value)}
+              placeholder="Enter new destination"
+            />
+            <div className="modal-actions">
+              <button onClick={handleUpdateOrder} className="modal-button">
+                Update
+              </button>
+              <button onClick={handleCloseModal} className="modal-button">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -168,16 +256,16 @@ const Orders = () => {
 const getStatusClass = (status) => {
   switch (status) {
     case "Pending":
-      return "status-pending";
+      return "pending";
     case "In_Transit":
-      return "status-in-transit";
+      return "in_transit";
     case "Delivered":
-      return "status-delivered";
+      return "delivered";
     case "Cancelled":
-      return "status-cancelled";
+      return "cancelled";
     default:
       return "";
   }
 };
 
-export default Orders;
+export default UserOrders;

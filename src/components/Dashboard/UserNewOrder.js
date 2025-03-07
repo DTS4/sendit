@@ -3,7 +3,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.js";
-
+import '../../styles/UserNewOrder.css';
 // Initial state for parcel details
 const initialParcelDetails = {
   pickup_location: "",

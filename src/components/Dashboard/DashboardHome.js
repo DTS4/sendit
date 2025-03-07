@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Users, DollarSign, ShoppingBag, TrendingUp } from "lucide-react";
+import { Users, ShoppingBag,  } from "lucide-react";
 import "../../styles/DashboardHome.css";
 import { useAuth } from "../../context/AuthContext"; // Check the correct path
 
@@ -33,13 +33,13 @@ const DashboardHome = () => {
             trend: "+12.5%",
             color: "blue",
           },
-          {
-            label: "Total Revenue",
-            value: `$${data.delivered_orders || "N/A"}`,
-            icon: DollarSign,
-            trend: "+8.2%",
-            color: "red",
-          },
+          // {
+          //   label: "Total Revenue",
+          //   value: `$${data.delivered_orders || "N/A"}`,
+          //   icon: DollarSign,
+          //   trend: "+8.2%",
+          //   color: "red",
+          // },
           {
             label: "Delivered",
             value: data.delivered_orders || "N/A",
@@ -47,13 +47,13 @@ const DashboardHome = () => {
             trend: "+3.8%",
             color: "green",
           },
-          {
-            label: "Growth Rate",
-            value: `${data.in_transit_orders || "N/A"}%`,
-            icon: TrendingUp,
-            trend: "+2.4%",
-            color: "yellow",
-          },
+          // {
+          //   label: "Growth Rate",
+          //   value: `${data.in_transit_orders || "N/A"}%`,
+          //   icon: TrendingUp,
+          //   trend: "+2.4%",
+          //   color: "yellow",
+          // },
         ]);
       } catch (error) {
         console.error("Error fetching stats:", error);
