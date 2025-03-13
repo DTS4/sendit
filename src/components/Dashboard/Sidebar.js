@@ -22,12 +22,12 @@ const Sidebar = () => {
               <span className="nav-text">Profile</span>
             </Link>
           </li> */}
-          <li>
+          {/* <li>
             <Link to="/dashboard/settings" className="nav-item">
               <Settings className="nav-icon" />
               <span className="nav-text">Settings</span>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/dashboard/analytics" className="nav-item">
               <BarChart2 className="nav-icon" />
